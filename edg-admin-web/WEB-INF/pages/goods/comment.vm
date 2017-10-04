@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>评论表 精选</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+</head>
+<body>
+	
+	<table id="dg">
+	</table>
+	<div id="toolbar" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+			<a href="#" onclick="gotoView()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">查看</a>
+			<a href="javascript:void()" onclick="doDelect()" class="easyui-linkbutton"  iconCls="icon-cut" plain="true">删除</a>
+			<a href="javascript:void()" onclick="doRecovery()" class="easyui-linkbutton"  iconCls="icon-reload" plain="true">恢复</a>
+			#if($bianji)<a href="#" onclick="delrow()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">删除</a>#end
+		</div>
+		<div>
+			内容: <input id="qcontent"  name="content" class="easyui-textbox" type="text"  data-options="required:true"></input>
+			用户ID: <input id="quid"  name="uid" class="easyui-textbox" type="text"  data-options="required:true"></input>
+			商品ID: <input id="qaid"  name="aid" class="easyui-textbox" type="text"  data-options="required:true"></input>
+			客户端类型: 			
+			<select id="qclientType" name="clientType" class="easyui-combobox" panelHeight="auto" style="width:100px">
+				<option value="">不限</option>
+				<option value="1">pc</option>
+				<option value="2">ios</option>
+				<option value="3">安卓</option>
+			</select>
+			状态: 
+			<select id="qstatus" name="status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+				<option value="">不限</option>
+				<option value="1">可用</option>
+				<option value="2">已删除</option>
+			</select>
+			<a href="javascript:void()" onclick="doSearch()" class="easyui-linkbutton"  iconCls="icon-search">查询</a>
+		</div>
+	</div>
+	
+</body>
+	<SCRIPT >
+		$(function(){
+			//查询参数初始化
+			var pageSize = 20;
+			var pageNumber = 1;
+			var sortName = '';
+			var sortOrder = '';
+			$('#dg').datagrid({
+			    url:"list",
+			    toolbar:'#toolbar',
+				pagination:true,
+				singleSelect:true,
+				pageList: [10, 20, 30, 40, 50],
+			    pageSize:pageSize,
+			    pageNumber:pageNumber,
+			    sortOrder:sortOrder,
+			    sortName:sortName,
+				rownumbers:true,
+				fit: true,   //满屏
+			   	columns:[[
+			   		{field:'id',title:'id', width:40, align:"center",sortable:true},
+			   		{field:'content',title:'内容', width:250, align:"center",sortable:true},
+			   		{field:'clientType',title:'来源', width:40, align:"center",sortable:true,
+					     formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "PC";  
+                         }else if(value==2){
+					 		return "IOS"; 
+						 }else if (value == 3){
+						     return "Android"; 
+						 }
+                        }
+					},
+			   		{field:'uid',title:'评论人ID', width:80, align:"center", sortable:false},
+			   		{field:'nickname',title:'评论昵称', width:80, align:"center", sortable:false},
+					{field:'reuid',title:'to', width:80, align:"center", sortable:false},
+					{field:'gid',title:'商品id', width:100, align:"center", sortable:false},
+					{field:'title',title:'商品标题', width:100, align:"center", sortable:false},
+					{field:'isHuifu',title:'是否回复', width:60, align:"center", sortable:false,
+					     formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "是";  
+                         }else {
+					 		return "否"; 
+						 }
+                        }
+					},
+					{field:'pid',title:'父评论', width:180, align:"center", sortable:false},
+					{field:'clientIp',title:'IP', width:130, align:"center", sortable:false},
+			   		{field:'status',title:'是否可用', width:60, align:"center",sortable:true,
+						 formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "是";  
+                         }else {
+					 		return "已删除"; 
+						 }
+                        }
+					},
+			   		{field:'creatDt',title:'创建时间', width:200, align:"center", sortable:false,
+	                     formatter:function(value,row,index){ 
+						 if(value==null||value==''){
+						 	return '';
+						 }						 
+                         var unixTimestamp = new Date(value);  
+                         return unixTimestamp.toLocaleString();  
+                         } 
+					}
+			   	]]
+			});
+			
+		})
+		
+		function doDelect(){
+		var row = $('#dg').datagrid('getSelected');
+			if (row){
+			   alert(row.id);
+			}else{
+			   alert('请选择需要删除的评论');
+			}
+		}
+		
+		function doRecovery(){
+		var row = $('#dg').datagrid('getSelected');
+			if (row){
+			   alert(row.id);
+			}else{
+			   alert('请选择需要恢复的评论');
+			}
+		}
+	
+		function doSearch(){
+			//查询参数初始化
+			var content = $('#qcontent').val();
+			var uid = $('#quid').val();
+			var aid = $('#qaid').val();
+			var clientType = $('#qclientType').combobox('getValue');
+			var statusVal = $('#qstatus').combobox('getValue');
+			
+			$("#dg").datagrid('load',{
+				content:content,
+				uid:uid,
+				aid:aid,
+				clientType:clientType,
+				status:statusVal
+	    	});
+		}
+		
+		function doDelect(){
+		var row = $('#dg').datagrid('getSelected');
+			if (row){
+			    jQuery.ajax({
+				type : "post",
+				url  : "Delectone",
+				datetype: "json",
+				data: {id:row.id},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					alert('系统异常！');
+				}
+			});
+			}else{
+			   alert('请选择需要删除的评论');
+			}
+		}
+		
+		function doRecovery(){
+		var row = $('#dg').datagrid('getSelected');
+			if (row){
+			   jQuery.ajax({
+				type : "post",
+				url  : "Recoveryone",
+				datetype: "json",
+				data: {id:row.id},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					alert('系统异常！');
+				}
+			});
+			}else{
+			   alert('请选择需要恢复的评论');
+			}
+		}
+		
+		function gotoAdd(){
+			$('#addwin').form('clear');
+			 $('#addwin').window('open');
+		}
+		function gotoEdit(){
+			var row = $('#dg').datagrid('getSelected');
+            if (row){
+            	$('#editwin').window('open').window('setTitle','编辑');
+            	$('#editwin').form('load',row);
+            }
+		}
+		
+		function gotoView(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+			
+				jQuery.messager.alert('查看内容',row.content);
+			}
+			
+		}
+	
+		function saveForm(){
+			if(!$("#addform").form('validate')){
+				return;
+			}
+			
+			jQuery.ajax({
+				type : "post",
+				url  : "save",
+				datetype: "json",
+				data: $("#addform").serialize(),
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#addwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					alert('系统异常！');
+				}
+			});
+			
+		}
+		
+		function editForm(){
+		//alert(parent.location.href = "/login.html");
+			if(!$("#edtiform").form('validate')){
+				return;
+			}
+			jQuery.ajax({
+				type : "post",
+				url  : "edit",
+				datetype: "json",
+				data: $("#editform").serialize(),
+				success: function(data){
+					if(data.status==200){
+					jQuery.messager.alert('操作成功','操作成功')
+						$('#addwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					alert('系统异常！');
+				}
+			});		
+		}
+		
+		function delrow(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+    			jQuery.ajax({
+    				type : "post",
+    				url  : "edit",
+    				datetype: "json",
+    				data: {id:row.id,status:2},
+    				success: function(data){
+    					if(data.status==200){
+    					jQuery.messager.alert('操作成功','操作成功')
+    						$('#addwin').window('close');
+    						$('#dg').datagrid('reload');
+    					}
+    				},
+    				error:function(){
+    					alert('系统异常！');
+    				}
+    			});	
+			}
+		}
+
+		
+    </SCRIPT>
+</html>

@@ -1,0 +1,108 @@
+<!--
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://jquery-json.googlecode.com/files/jquery.json-2.2.min.js"></script>
+-->
+
+<script type="text/javascript" src="resource/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="resource/jquery.json-2.2.min.js"></script>
+
+<html>
+<head><title>Login</title></head>
+<body>
+	<div>
+	<form id="user" action="./login.do" method="POST">
+	        <fieldset>
+            <legend>��¼</legend>
+            <p>
+                <label style="width:1000px" for="userName">用户名:</label>
+                <input type="text" name="userName"/>
+            </p>
+            <p>
+                <label style="width:1000px" for="userPassword">密码:</label>
+                <input type="password" name="userPassword"/>     
+            </p>
+            <p>
+                <input type="submit" value="跳转登录" />
+                <input type="button" value="Ajax登陆" onclick="test('user', './login3.do');"/>
+            </p>
+        </fieldset>
+	</form>
+	</div>
+	<div id="result"></div>
+    <script type="text/javascript" language="javascript">
+
+		function test(formid, url) {
+			ajaxService(formid, url,
+			function(msg){
+                    var result = msg.replace(/(^\s*)|(\s*$)/g, "");
+                    $("#result").append(result);				
+			},
+			function(XMLHttpRequest, textStatus, errorThrown){
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);			
+			});
+		}
+
+		function ajaxService(formid, url, onSucc, onError) {
+            var data = {
+                head:{sessionId:1},
+                body:$('#'+formid).serializeObject()
+            }
+            var sendData = JSON.stringify(data);
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: url,
+                contentType:"application/json;charset=UTF-8",
+                data:sendData,
+                success: onSucc,
+                error: onError
+            });  
+		}
+
+        function loginWithAjax() {
+        
+        	//var userName = document.getElementById("userName").value;
+        	//var userPwd = document.getElementById("userPassword").value;
+        	var jsonObj = $('#user').serializeObject();
+
+        	var jsonuserinfo = $.toJSON(jsonObj);
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "./login4.do",
+                contentType:"application/json",
+                //data: "userName=" + userName + "&userPassword="+userPwd,
+                data:jsonuserinfo,
+                success: function(msg) {
+                    var result = msg.replace(/(^\s*)|(\s*$)/g, "");
+                    $("#result").append(result);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            });                  
+        }
+        
+        $.fn.serializeObject = function() {
+          var o = {};     
+          var a = this.serializeArray();     
+          $.each(a, function() {     
+            if (o[this.name]) {     
+              if (!o[this.name].push) {     
+                o[this.name] = [ o[this.name] ];     
+              }     
+              o[this.name].push(this.value || '');     
+            } else {     
+              o[this.name] = this.value || '';     
+            }     
+          });     
+          return o;     
+        };     
+        
+    </script>
+</body>
+</html>

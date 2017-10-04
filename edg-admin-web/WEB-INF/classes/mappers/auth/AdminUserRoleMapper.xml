@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.AdminUserRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.drbwx.admin.po.AdminUserRole" >
+    <id column="ROLE_ID" property="roleId" jdbcType="DECIMAL" />
+    <id column="USER_ID" property="userId" jdbcType="DECIMAL" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.drbwx.admin.po.AdminUserRole" >
+    delete from ADMIN_USER_ROLE
+    where ROLE_ID = #{roleId,jdbcType=DECIMAL}
+      and USER_ID = #{userId,jdbcType=DECIMAL}
+  </delete>
+   <delete id="deleteByOperId" parameterType="java.lang.Integer" >
+    delete from ADMIN_USER_ROLE
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </delete>
+   <delete id="deleteByRoleId" parameterType="java.lang.Integer" >
+    delete from ADMIN_USER_ROLE
+    where ROLE_ID = #{roleId,jdbcType=DECIMAL}
+  </delete>  
+  <insert id="insert" parameterType="com.drbwx.admin.po.AdminUserRole" >
+    insert into ADMIN_USER_ROLE (ROLE_ID, USER_ID)
+    values (#{roleId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.drbwx.admin.po.AdminUserRole" >
+    insert into ADMIN_USER_ROLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="findByWhere" resultMap="BaseResultMap" parameterType="com.drbwx.admin.po.AdminRole" >
+		SELECT DISTINCT UR.ROLE_ID, UR.USER_ID from ADMIN_USER_ROLE UR,ADMIN_ROLE R 
+		<where>  
+        <if test="roleId!=null and roleId!='' "> 
+        	AND UR.ROLE_ID= #{roleId}
+        </if>  
+       <if test="userId!=null and userId!='' "> 
+        	AND UR.USER_ID= #{userId} 
+        </if>
+		</where>
+		AND  R.id=UR.ROLE_ID AND  R.STATUS = 1
+  </select>
+</mapper>

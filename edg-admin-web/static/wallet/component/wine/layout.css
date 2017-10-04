@@ -1,0 +1,90 @@
+@charset "UTF-8";
+/* CSS Document */
+@charset "utf-8";
+
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div {
+     font-family: Arial,Helvetica,sans-serif;
+     font-size: 12px;
+     margin: 0px;
+     padding: 0px;
+}
+
+#Container {
+     margin: 0px auto;
+     padding: 0px;
+     width: 100%;
+}
+
+#Header {
+     height: 65px;
+	 width:100%;
+	 border-bottom:1px solid #ddd;
+	 box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	 position:fixed;
+	 background-color:#d32f2f;
+}
+
+#logo {
+     height: 65px;
+	 float:left;
+	 width:200px;
+	 border-right:1px solid #b6131b;
+	 background-color:#c9161e;
+	 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);/*opera»òie9*/
+	-moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);/*firefox*/
+	-webkit-box-shadow:0 2px 8px rgba(0, 0, 0, 0.25);/*webkit*/
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#bfbfbf', Direction=180, Strength=8);/*for ie6,7,8*/
+}
+
+#Content {
+	clear:both;
+	 display:table;
+     height: 600px;
+     margin-top: 0px;
+	 width:100%;
+	 background:#efefef;
+}
+
+#Content-Left {
+     height: 100%;
+     margin: 0px;
+     width:200px;
+	 min-width:200px;
+	 background-color:#fff;
+	 display:table-cell;
+	 left:0;
+	 bottom:0;
+	 top:65px;
+	 vertical-align:top;
+	-webkit-transition: 0.25s ease-in;
+	-o-transition: 0.25s ease-in;
+	transition: 0.25s ease-in;
+	position:fixed;
+	 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);/*opera»òie9*/
+	-moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);/*firefox*/
+	-webkit-box-shadow:0 2px 8px rgba(0, 0, 0, 0.25);/*webkit*/
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#bfbfbf', Direction=180, Strength=8);/*for ie6,7,8*/
+	z-index:10;
+}
+
+#Content-Main {
+	margin-left:240px;
+     height: auto;
+    margin: 65px 0 0;
+    padding: 25px 25px 25px 225px;
+	 background-color:#f1f1f1;
+	 height:100%;
+	 min-width:1000px;
+}
+#Footer {
+	bottom: 0;
+    height: 50px;
+    line-height: 50px;
+    position: fixed;
+    width: 200px;
+    z-index: 100;
+}
+.Clear {
+     clear: both;
+}
+

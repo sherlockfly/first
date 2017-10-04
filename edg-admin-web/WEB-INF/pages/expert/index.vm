@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>达人管理</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script>
+		$(function(){
+			//查询参数初始化
+			var pageSize = 20;
+			var pageNumber = 1;
+			var sortName = '';
+			var sortOrder = '';
+			$('#dg').datagrid({
+			    url:"list",
+			    toolbar:'#toolbar',
+				pagination:true,
+				singleSelect:true,
+				pageList: [10, 20, 30, 40, 50],
+			    pageSize:pageSize,
+			    pageNumber:pageNumber,
+			    sortOrder:sortOrder,
+			    sortName:sortName,
+				rownumbers:true,
+				fit: true,   //满屏
+			   	columns:[[
+			   		{field:'id',title:'id', width:40, align:"center",sortable:true,"hidden":true},
+			   		{field:'uid',title:'uid', width:100, align:"center", sortable:false,"hidden":true},
+					{field:'nickName',title:'昵称', width:100, align:"center", sortable:false},
+					{field:'headIocn',title:'头像', width:100, align:"center", sortable:false},
+					{field:'fansNum',title:'粉丝数量', width:100, align:"center", sortable:false},
+					{field:'intro',title:'简介', width:100, align:"center", sortable:false},
+			   		{field:'applyDate',title:'最近登录时间时间', width:140, align:"center", sortable:false,
+                     	formatter:function(value,row,index){  
+						 if(value==null||value==''){
+						 	return '';
+						 }
+                         var unixTimestamp = new Date(value); 
+                         return unixTimestamp.toLocaleString();  
+                         } 		
+					},					
+					{field:'phone',title:'电话', width:100, align:"center", sortable:false},
+					{field:'homepage',title:'主页', width:100, align:"center", sortable:false},
+					{field:'catId',title:'分类', width:100, align:"center",sortable:true},
+			   		{field:'tags',title:'标签', width:100, align:"center", sortable:false},					
+			   		{field:'applyDate',title:'创建时间', width:140, align:"center", sortable:false,
+                     	formatter:function(value,row,index){  
+						 if(value==null||value==''){
+						 	return '';
+						 }
+                         var unixTimestamp = new Date(value); 
+                         return unixTimestamp.toLocaleString();  
+                         } 		
+					},
+			   		{field:'status',title:'状态', width:60, align:"center",sortable:true,
+						 formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "可用";  
+                         }else if(va
+						 lue==2){
+					 		return "禁用"; 
+						 }
+                        }
+					},
+				
+			   	]]
+			});
+			
+		})		
+    </script>
+</head>
+<body>
+	<table id="dg">
+	</table>
+	<div id="toolbar" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+		</div>
+		<div>
+			名称: <input id="qname"  name="qname" class="easyui-textbox" type="text"  data-options="required:true"></input>
+			&nbsp状态: 
+			<select id="qstatus" name="qstatus" class="easyui-combobox" panelHeight="auto" style="width:100px">
+				<option value="">不限</option>
+				<option value="1">启用</option>
+				<option value="2">禁用</option>
+			</select>
+			<a href="javascript:void()" onclick="doSearch()" class="easyui-linkbutton" iconCls="icon-search"></a>
+		</div>
+	</div>
+
+</body>
+	<script >
+    	function doSearch(){
+    		//查询参数初始化
+    		var name = $('#qname').val();
+    		var statusVal = $('#qstatus').combobox('getValue');
+    		
+    		$("#dg").datagrid('load',{
+    			name,name,
+    			status:statusVal
+        	});
+    	}
+    	function update(id,status){
+			jQuery.ajax({
+				type : "post",
+				url  : "savecheck",
+				datetype: "json",
+				data: {id:id,status:status},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#editwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+				}
+			});	
+    	}
+
+    </script>
+</html>

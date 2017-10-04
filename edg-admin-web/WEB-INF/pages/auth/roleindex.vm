@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理员角色管理</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script>
+		$(function(){
+			//查询参数初始化
+			var pageSize = 20;
+			var pageNumber = 1;
+			var sortName = '';
+			var sortOrder = '';
+			$('#dg').datagrid({
+			    url:"list",
+			    toolbar:'#toolbar',
+				pagination:true,
+				singleSelect:true,
+				pageList: [10, 20, 30, 40, 50],
+			    pageSize:pageSize,
+			    pageNumber:pageNumber,
+			    sortOrder:sortOrder,
+			    sortName:sortName,
+				rownumbers:true,
+				fit: true,   //满屏
+			   	columns:[[
+			   		{field:'id',title:'id', width:40, align:"center",sortable:true,"hidden":true},
+			   		{field:'roleCode',title:'角色代码', width:100, align:"center",sortable:true},
+			   		{field:'name',title:'名称', width:100, align:"center", sortable:false},
+			   		{field:'creatDt',title:'创建时间', width:140, align:"center", sortable:false,
+						formatter:function(value,row,index){  
+                         var unixTimestamp = new Date(value);  
+                         return unixTimestamp.toLocaleString();  
+                         } 
+					},
+			   		{field:'updateDt',title:'更新时间', width:140, align:"center", sortable:false,
+                     	formatter:function(value,row,index){  
+						 if(value==null||value==''){
+						 	return '';
+						 }
+                         var unixTimestamp = new Date(value); 
+                         return unixTimestamp.toLocaleString();  
+                         } 		
+					},
+			   		{field:'creator',title:'创建人', width:140, align:"center", sortable:false},
+			   		{field:'status',title:'状态', width:60, align:"center",sortable:true,
+						 formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "启用";  
+                         }else {
+					 		return "禁用"; 
+						 }
+                        }
+					}
+			   	]]
+			});
+			
+		})		
+    </script>
+</head>
+<body>
+	<table id="dg">
+	</table>
+	<div id="toolbar" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+			<a href="#" onclick="gotoAdd()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+			<a href="#" onclick="gotoEdit()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>
+			<a href="#" onclick="delrow()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+			<a href="#" onclick="gotomenu()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">分配菜单</a>
+			<a href="#" onclick="gotofunction()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">分配功能</a>
+		</div>
+		<div>
+			名称: <input id="qname"  name="qname" class="easyui-textbox" type="text"  data-options="required:true"></input>
+			&nbsp状态: 
+			<select id="qstatus" name="qstatus" class="easyui-combobox" panelHeight="auto" style="width:100px">
+				<option value="">不限</option>
+				<option value="1">启用</option>
+				<option value="2">禁用</option>
+			</select>
+			<a href="javascript:void()" onclick="doSearch()" class="easyui-linkbutton" iconCls="icon-search"></a>
+		</div>
+	</div>
+	
+	 <!--添加-->
+	<div id="addwin" closed="true" class="easyui-window"  title="添加分类" data-options="iconCls:'icon-save'" style="width:400px;height:300px;padding:10px;">
+	    <form id="addform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>角色代码:</td>
+	    			<td><input id="roleCode" name="roleCode" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>角色名称:</td>
+	    			<td><input id="name" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>状态:</td>
+					<td>
+    				<select style="width:100px;" data-options="required:true" panelHeight="40" id="edit_status" name="status" class="easyui-combobox" ><option value="1">启用</option><option  value="2">禁用</option></select>
+					</td>
+	    		</tr>					
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveForm()">保存</a>
+	    </div>
+	</div>
+	 <!--编辑-->
+	<div id="editwin" closed="true" class="easyui-window"  title="添加分类" data-options="iconCls:'icon-save'" style="width:400px;height:300px;padding:10px;">
+	    <form id="editform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td><input id="id" name="id" readonly="true" hidden="true" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>角色代码:</td>
+	    			<td><input id="roleCode" name="roleCode" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>角色名称:</td>
+	    			<td><input id="name" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>状态:</td>
+					<td>
+    				<select style="width:100px;" data-options="required:true" panelHeight="40" id="edit_status" name="status" class="easyui-combobox" ><option value="1">启用</option><option  value="2">禁用</option></select>
+					</td>
+	    		</tr>				
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="editForm()">保存</a>
+	    </div>
+	</div>
+	
+	<div id="editmenuwin" closed="true" class="easyui-window"  title="分配菜单" data-options="iconCls:'icon-save'" style="width:400px;height:500px;padding:10px;">
+	    <form id="editmenuform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td><input id="roleId" name="id" readonly="true" hidden="true" class="easyui-validatebox textbox" data-options="required:true" type="text"  ></input></td>
+	    		</tr>	
+	    		<tr>
+	    			<td>角色代码:</td>
+	    			<td><input disabled="disabled" id="roleCode" name="roleCode" class="easyui-validatebox textbox" data-options="required:true" type="text"  ></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>角色名称:</td>
+	    			<td><input disabled="disabled" id="name" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text"  ></input></td>
+	    		</tr>	
+	    		<tr>
+	    			<td>菜单:</td>
+	    			<td>
+                    	<ul id="menus" name="menus" class="easyui-tree" cascadeCheck="checked"
+                    			url="../menu/menutree"
+                    			checkbox="true">
+                    	</ul>
+					
+					</td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="savemenus()">保存</a>
+	    </div>
+	</div>
+	
+	<div id="editfunctionwin" closed="true" class="easyui-window"  title="分配菜单" data-options="iconCls:'icon-save'" style="width:400px;height:500px;padding:3px;">
+	    <form id="editfunctionform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td><input id="roleId2" name="id" readonly="true" hidden="true" class="easyui-validatebox textbox" data-options="required:true" type="text"  ></input></td>
+	    		</tr>	
+	    		<tr>
+	    			<td>角色代码:</td>
+	    			<td><input disabled="disabled" id="roleCode2" name="roleCode" class="easyui-validatebox textbox" data-options="required:true" type="text"  ></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>角色名称:</td>
+	    			<td><input disabled="disabled" id="name2" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text"  ></input></td>
+	    		</tr>	
+	    		<tr>
+	    			<td>功能按钮:</td>
+	    			<td>
+                    	<ul id="functions" name="functions" class="easyui-tree" cascadeCheck="checked" onlyLeafCheck="true" 
+                    			url="../function/menuAndfunctiontree"
+                    			checkbox="true" >
+                    	</ul>
+					
+					</td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveFunctions()">保存</a>
+	    </div>
+	</div>	
+</body>
+	<SCRIPT >
+		function doSearch(){
+			//查询参数初始化
+			var name = $('#qname').val();
+			var statusVal = $('#qstatus').combobox('getValue');
+			
+			$("#dg").datagrid('load',{
+				name,name,
+				status:statusVal
+	    	});
+		}
+		
+		function gotoAdd(){
+			$('#addwin').form('clear');
+			 $('#addwin').window('open').window('setTitle','添加角色');;
+		}
+		function gotoEdit(){
+			var row = $('#dg').datagrid('getSelected');
+            if (row){
+            	$('#editwin').window('open').window('setTitle','编辑');
+            	$('#editwin').form('load',row);
+            }
+		}
+		function saveForm(){
+			if(!$("#addform").form('validate')){
+				return;
+			}
+			jQuery.ajax({
+				type : "post",
+				url  : "save",
+				datetype: "json",
+				data: $("#addform").serialize(),
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#addwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error');
+				}
+			});
+			
+		}
+		
+		function editForm(){
+			if(!$("#editform").form('validate')){
+				return;
+			}
+			
+			jQuery.ajax({
+				type : "post",
+				url  : "update",
+				datetype: "json",
+				data: $("#editform").serialize(),
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#editwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+				}
+			});		
+		}
+		
+		function delrow(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+			jQuery.messager.confirm('系统提示', "确认要删除吗？", function (data) {
+                if (data) {
+        			jQuery.ajax({
+        				type : "post",
+        				url  : "del",
+        				datetype: "json",
+        				data: {id:row.id},
+        				success: function(data){
+        					if(data.status==200){
+								jQuery.messager.alert('操作成功','操作成功')
+        						$('#dg').datagrid('reload');
+        					}
+        				},
+        				error:function(){
+        					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+        				}
+        			});	
+                }else {
+                    return;
+                }
+        	});
+			}
+		}
+		
+		function gotomenu(){
+			var row = $('#dg').datagrid('getSelected');
+            if (row){
+				$('#editmenuform').form('clear');
+    			var nodes = $('#menus').tree('getChecked');
+    			for(var i=0; i<nodes.length; i++){
+    				$('#menus').tree('uncheck',nodes[i].target);
+    			}
+				//获取已有权限
+				jQuery.ajax({
+            				type : "post",
+            				url  : "../menu/getRoleMenus",
+            				datetype: "json",
+            				data: {roleId:row.id},
+            				success: function(data){
+            					if(data.status==200){
+            						$('#dg').datagrid('reload');
+					            	$('#editmenuwin').window('open');
+									$('#editmenuwin').form('load',row);
+									if(data.body!=''){
+										var vs = data.body.split(',');
+										for(var i=0;i<vs.length;i++){
+											var node = $('#menus').tree('find', vs[i]);
+                    						$('#menus').tree('check',node.target);
+										}
+
+									}
+            					}
+            				},
+            				error:function(){
+            					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+            				}
+            			});	
+            }
+		
+		}
+		
+		function savemenus(){
+			var menus = '';
+			var nodes = $('#menus').tree('getChecked');
+			for(var i=0; i<nodes.length; i++){
+				if (menus != '') menus += ',';
+				menus += nodes[i].id;
+			}
+			
+			var roleId = $('#roleId').val();
+			jQuery.ajax({
+				type : "post",
+				url  : "../menu/addRoleMenus",
+				datetype: "json",
+				data: {roleId:roleId,menus:menus},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+					}
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error');
+				}
+			});
+		
+		}
+		
+		function gotofunction(){
+			var row = $('#dg').datagrid('getSelected');
+            if (row){
+				$('#editfunctionform').form('clear');
+    			var nodes = $('#functions').tree('getChecked');
+    			for(var i=0; i<nodes.length; i++){
+    				$('#functions').tree('uncheck',nodes[i].target);
+    			}
+				jQuery.ajax({
+            				type : "post",
+            				url  : "../function/getRoleFunctions",
+            				datetype: "json",
+            				data: {roleId:row.id},
+            				success: function(data){
+            					if(data.status==200){
+            						$('#dg').datagrid('reload');
+					            	$('#editfunctionwin').window('open');
+									$('#editfunctionwin').form('load',row);
+									if(data.body!=''){
+										var vs = data.body.split(',');
+										for(var i=0;i<vs.length;i++){
+											var node = $('#functions').tree('find', vs[i]);
+                    						$('#functions').tree('check',node.target);
+										}
+
+									}
+            					}
+            				},
+            				error:function(){
+            					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+            				}
+            			});	
+            }
+				
+		}
+		function saveFunctions(){
+			var functions = '';
+			var nodes = $('#functions').tree('getChecked');
+			for(var i=0; i<nodes.length; i++){
+				if (functions != '') functions += ',';
+				functions += nodes[i].id;
+			}
+			var roleId = $('#roleId2').val();
+			jQuery.ajax({
+				type : "post",
+				url  : "../function/addRoleFunctions",
+				datetype: "json",
+				data: {roleId:roleId,functions:functions},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+					}
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error');
+				}
+			});		
+		}
+    </SCRIPT>
+</html>

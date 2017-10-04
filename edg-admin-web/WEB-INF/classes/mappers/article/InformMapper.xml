@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.InformMapper" >
+  <resultMap id="BaseResultMap" type="com.drbwx.admin.po.Inform" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="creat_dt" property="creatDt" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="nickname1" property="username" jdbcType="VARCHAR" />
+    <result column="nickname2" property="adminname" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    i.id,uid,u.nickname as nickname1,content,type,creat_dt,i.status,operator,o.nickname as nickname2
+  </sql>
+	<select id="findByPage" resultMap="BaseResultMap"
+		parameterType="com.drbwx.admin.po.Inform">
+		select  
+		<include refid="Base_Column_List" /> 
+		from inform i left JOIN user u on i.uid = u.id LEFT JOIN user o on i.operator = o.id
+		ORDER BY i.id desc 
+	</select>
+	
+	<update id="change">
+	   UPDATE inform SET status = #{param2} WHERE id = #{param1};
+	</update>
+	
+</mapper>

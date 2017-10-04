@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>达选管理系统</title>
+<link href=#springUrl('/static/css/default.css') rel="stylesheet" type="text/css"/>
+<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href=#springUrl('/static/js/jquery-easyui/demo/demo.css') rel="stylesheet" type="text/css"/>
+<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+<script src=#springUrl('/static/js/outlook.js') ></script>
+<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script>
+		var _menus = {
+        	basic : $menuTree
+        };
+    </script>
+	
+	<style>
+	#css3menu li{ float:left; list-style-type:none;}
+	#css3menu li a{	color:#fff; padding-right:20px;}
+	#css3menu li a.active{color:yellow;}
+	</style>
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'north',border:false" style="height:40px;background:#B3DFDA;padding:10px">达选运营管理系统
+	        <span style="float:right; padding-right:20px;" class="head">欢迎 ,$realname <a href="javascript:goupdpwd()" id="editpass">修改密码</a> <a href="logout" id="loginOut">安全退出</a></span>
+	
+			<ul id="css3menu" style="padding:0px; margin:0px;list-type:none; float:left; margin-left:40px;">
+				<li ><a class="active" name="basic" href="javascript:;" title="一级菜单1"></a></li>
+				<li><a name="point" href="javascript:;" title="一级菜单2"></a></li>
+			</ul>
+	
+	</div>
+	
+	<div data-options="region:'west',split:true,title:'导航菜单'" style="width:150px" id="west">
+		<div id='wnav' class="easyui-accordion" fit="false" border="false">
+				
+		</div>
+	</div>
+	<!--
+	<div data-options="region:'south',border:false" style="height:50px;background:#A9FACD;padding:10px;">
+		<div class="footer">达选集团</div>
+	</div>
+	-->
+	<div data-options="region:'center'">
+        <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
+			<div title="欢迎使用" style="padding:20px;overflow:hidden;" id="home">
+				
+			<h1>Welcome ~</h1>
+
+			</div>
+		</div>
+	</div>	
+</div>
+    <!--修改密码窗口-->
+    <div id="pwdwin" closed="true" class="easyui-window" title="修改密码" collapsible="false" minimizable="false"
+        maximizable="false" icon="icon-save"  style="width: 300px; height: 220px; padding: 5px;
+        background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+                <form id="pwdform" method="post">
+				<table cellpadding=3>
+                    <tr>
+                        <td>旧密码：</td>
+                        <td><input id="oldpwd" name="oldpwd"   class="easyui-validatebox" required="true" type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td>新密码：</td>
+                        <td><input id="pwd" name="pwd"  validType="length[4,20]" class="easyui-validatebox" required="true" type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td>确认密码：</td>
+                        <td><input id="pwd2"  required="true" class="easyui-validatebox"  validType="equalTo['#pwd']" invalidMessage="两次输入密码不匹配" type="password" /></td>
+                    </tr>
+                </table>
+				</form>
+            </div>
+            <div region="south" border="false" style="text-align: right; height: 30px; line-height: 30px;">
+                <a id="btnEp" class="easyui-linkbutton" icon="icon-ok" onclick="updpwd()" href="javascript:void(0)" >确定</a> 
+            </div>
+        </div>
+    </div>
+</body>
+<SCRIPT >
+     jQuery.extend(jQuery.fn.validatebox.defaults.rules, {
+        /*必须和某个字段相等*/
+        equalTo: { validator: function (value, param) { return $(param[0]).val() == value; }, message: '字段不匹配' }
+       });
+	function goupdpwd(){
+		$('#pwdform').form('clear');
+		 $('#pwdwin').window('open');
+	}
+	
+	function updpwd(){
+			if(!$("#pwdform").form('validate')){
+				return;
+			}
+			jQuery.ajax({
+				type : "post",
+				url  : "oper/updpwd",
+				datetype: "json",
+				data: $("#pwdform").serialize(),
+				success: function(data){
+					jQuery.messager.alert('提示',data.msg);
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+				}
+			});	
+	}
+</SCRIPT >
+</html>

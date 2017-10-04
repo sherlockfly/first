@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>分类管理</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/ztree/css/zTreeStyle/zTreeStyle.css') rel="stylesheet" type="text/css" />
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script src=#springUrl('/static/js/ztree/js/jquery.ztree.core.js')></script>
+</head>
+<body>
+	
+	<table id="dg">
+	</table>
+	<div id="toolbar" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+			
+			#if($tianjia)<a href="#" onclick="gotoAdd()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>#end
+			#if($bianji)<a href="#" onclick="gotoEdit()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>#end
+			#if($shanchu)<a href="#" onclick="delrow()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>#end
+		
+		</div>
+		<div>
+			名称: <input id="qname"  name="name" class="easyui-textbox" style="width:100px">
+			级别: 
+			<select id="qlevel" name="level" class="easyui-combobox" panelWidth="auto" panelHeight="auto" style="width:100px">
+				<option value="">不限</option>
+				<option value="1">1级</option>
+				<option value="2">2级</option>
+				<option value="3">3级</option>
+			</select>			
+			是否可用: 
+			<select id="qstatus" name="status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+				<option value="">不限</option>
+				<option value="1">是</option>
+				<option value="2">否</option>
+			</select>
+			父分类: <input id="pid3ShowName" class="easyui-textbox" style="width:200px">
+			<input id="pid" name="pid" type="hidden">
+			<a id="selectCategoryBtn3" href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">选择父分类</a>
+			<a href="javascript:void()" onclick="doSearch()" class="easyui-linkbutton"  iconCls="icon-search">查询</a>
+		</div>
+	</div>
+	
+	 <!--添加-->
+	<div id="addwin" closed="true" class="easyui-window"  title="添加分类" data-options="iconCls:'icon-save'" style="width:430px;height:330px;padding:10px;">
+	    <form id="addform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>分类名称:</td>
+	    			<td><input id="name1" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text" ></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>级别:</td>
+	    			<td>
+	    				<select panelHeight="70" style="width:80px;" id="grade1" name="grade"  class="easyui-combobox" data-options="required:true"><option value="1">1级</option><option valuen value="2">2级</option><option valuen value="3">3级</option></select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>父分类:</td>
+	    			<td>
+	    				<input id="pid1ShowName" type="text" ></input>
+	    				<input id="pid1" name="pid" type="hidden" ></input>
+	    				<a id="selectCategoryBtn" href="#" class="easyui-linkbutton" 
+							        	data-options="plain:true,iconCls:'icon-edit'">选择父分类</a>
+	    			</td>
+				</tr>		
+	    		<tr>
+	    			<td>是否启用:</td>
+	    			<td>
+	    				<select panelHeight="40" style="width:80px;" id="status1" name="status" class="easyui-combobox" data-options="required:true"><option value="1">是</option><option valuen value="2">否</option></select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>备注:</td>
+	    			<td><input id="remark1" name="remark" class="easyui-textbox" data-options="required:true" type="text"   style="width:180px;height:40px"></input></td>
+	    		</tr>				
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveForm()">保存</a>
+	    </div>
+	</div>
+	 <!--编辑-->
+	<div id="editwin" closed="true" class="easyui-window"  title="添加分类" data-options="iconCls:'icon-save'" style="width:430px;height:330px;padding:10px;">
+	    <form id="editform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td><input id="id2" name="id" readonly="true" hidden="true" class="easyui-validatebox textbox" data-options="required:true" type="text" ></input></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>分类名称:</td>
+	    			<td><input id="name2" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text" ></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>级别:</td>
+	    			<td>
+	    				<select panelHeight="70" style="width:80px;" id="grade2" name="grade"  class="easyui-combobox" data-options="required:true"><option value="1">1级</option><option valuen value="2">2级</option><option valuen value="3">3级</option></select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>父分类:</td>
+	    			<td>
+	    				<input id="pid2ShowName" type="text" ></input>
+	    				<input id="pid2" name="pid" type="hidden" ></input>
+	    				<a id="selectCategoryBtn2" href="#" class="easyui-linkbutton" 
+							        	data-options="plain:true,iconCls:'icon-edit'">选择父分类</a>
+					</td>
+				</tr>		
+	    		<tr>
+	    			<td>是否启用:</td>
+	    			<td>
+	    				<select panelHeight="40" style="width:80px;" id="status2" name="status" class="easyui-combobox" data-options="required:true"><option value="1">是</option><option valuen value="2">否</option></select>
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>备注:</td>
+	    			<td><input id="remark2" name="remark" class="easyui-textbox" data-options="required:true" type="text"   style="width:180px;height:40px"></input></td>
+	    		</tr>				
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="editForm()">保存</a>
+	    </div>
+	</div>
+	<!-- 分类树 -->
+	<div style="display: none;">
+		<div id="categoryTreeRoot" class="ztree"></div>
+	</div>
+</body>
+	<SCRIPT >
+		$(function(){
+			//查询参数初始化
+			var pageSize = 20;
+			var pageNumber = 1;
+			var sortName = '';
+			var sortOrder = '';
+			$('#dg').datagrid({
+			    url:"list",
+			    toolbar:'#toolbar',
+				pagination:true,
+				singleSelect:true,
+				pageList: [10, 20, 30, 40, 50],
+			    pageSize:pageSize,
+			    pageNumber:pageNumber,
+			    sortOrder:sortOrder,
+			    sortName:sortName,
+				rownumbers:true,
+				fit: true,   //满屏
+			   	columns:[[
+			   		{field:'id',title:'id', width:40, align:"center",sortable:true},
+			   		{field:'name',title:'名称', width:150, align:"center",sortable:true},
+			   		
+			   		{field:'grade',title:'级别', width:40, align:"center", sortable:false},
+			   		{field:'pid',title:'父分类id', width:150, align:"center", sortable:false},
+					{field:'pCode',title:'父分类code', width:150, align:"center", sortable:false},	
+			   		//{field:'remarker',title:'备注', width:200, align:"center", sortable:false},
+			   		{field:'status',title:'是否可用', width:60, align:"center",sortable:true,
+						 formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "是";  
+                         }else {
+					 		return "否"; 
+						 }
+                        }
+					},
+			   		{field:'creatTime',title:'创建时间', width:200, align:"center", sortable:false,
+	                     formatter:function(value,row,index){ 
+						 if(value==null||value==''){
+						 	return '';
+						 }						 
+                         var unixTimestamp = new Date(value);  
+                         return unixTimestamp.toLocaleString();  
+                         } 
+					},
+			   		{field:'updateTime',title:'更新时间', width:200, align:"center", sortable:false,
+	                     formatter:function(value,row,index){  
+ 						 if(value==null||value==''){
+						 	return '';
+						 }
+                         var unixTimestamp = new Date(value);  
+                         return unixTimestamp.toLocaleString();  
+                         } 
+					}
+			   	]]
+			});
+			
+		})
+	
+		function doSearch(){
+			//查询参数初始化
+			var name = $('#qname').val();
+			var grade = $('#qlevel').combobox('getValue');
+			var statusVal = $('#qstatus').combobox('getValue');
+			$("#dg").datagrid('load',{
+				name:name,
+				grade:grade,
+				status:statusVal,
+				pid:$('#pid').val()
+	    	});
+		}
+		
+		function gotoAdd(){
+			$('#addwin').form('clear');
+			 $('#addwin').window('open');
+		}
+		function gotoEdit(){
+			var row = $('#dg').datagrid('getSelected');
+            if (row){
+            	//把之前的值清空
+            	$('#pid2ShowName').val('');
+            	$('#pid2').val('');
+            	$('#editwin').window('open').window('setTitle','编辑');
+            	$('#editwin').form('load',row);
+            }
+		}
+		function saveForm(){
+			if(!$("#addform").form('validate')){
+				return;
+			}
+			
+			jQuery.ajax({
+				type : "post",
+				url  : "add",
+				datetype: "json",
+				data: $("#addform").serialize(),
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.show({
+							title:'提示信息',
+							msg:'操作成功',
+							showType:'show'
+						});
+						$('#addwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					jQuery.messager.show({
+						title:'提示信息',
+						msg:'系统异常',
+						showType:'show'
+					});
+				}
+			});
+			
+		}
+		
+		function editForm(){
+			if(!$("#edtiform").form('validate')){
+				return;
+			}
+			jQuery.ajax({
+				type : "post",
+				url  : "edit",
+				datetype: "json",
+				data: $("#editform").serialize(),
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.show({
+							title:'提示信息',
+							msg:'操作成功',
+							showType:'show'
+						});
+						$('#addwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					jQuery.messager.show({
+						title:'提示信息',
+						msg:'系统异常',
+						showType:'show'
+					});
+				}
+			});		
+		}
+		
+		function delrow(){
+			var _rows = $('#dg').datagrid('getSelections');
+			if(_rows && _rows.length == 1){
+				jQuery.messager.confirm('确认窗口', '确认删除该条记录', function(r){
+					if (r){
+						var row = _rows[0];
+						jQuery.ajax({
+							type : "post",
+							url  : "del",
+							datetype: "json",
+							data: {id:row.id},
+							success: function(data){
+								if(data.status==200){
+									jQuery.messager.show({
+										title:'提示信息',
+										msg:'操作成功',
+										showType:'show'
+									});
+									$('#dg').datagrid('reload');
+								}
+							},
+							error:function(){
+								jQuery.messager.show({
+									title:'提示信息',
+									msg:'系统异常',
+									showType:'show'
+								});
+							}
+						});
+					}
+				});
+			}else{
+				jQuery.messager.show({
+					title:'提示信息',
+					msg:'请选择一条记录',
+					showType:'show'
+				});
+			}
+		}
+		$(document).ready(function(){
+			var setting = {
+                async: {
+                    enable: true,
+                    url:"findChildren",
+                    autoParam:["id"],
+                    dataFilter: filter
+            	},
+                callback: {
+					onClick: function(event, treeId, treeNode){
+						var categoryType = treeNode.categoryType;
+						$('#pid1').val(treeNode.id);
+						$('#pid2').val(treeNode.id);
+						$('#pid').val(treeNode.id);
+						if(treeNode.grade <= 1){
+							$('#pid1ShowName').val(treeNode.name);
+							$('#pid2ShowName').val(treeNode.name);
+							$('#pid3ShowName').val(treeNode.name);
+						}else{
+							$('#pid1ShowName').val(getBreadCrumbs(treeNode));
+							$('#pid2ShowName').val(getBreadCrumbs(treeNode));
+							$('#pid3ShowName').val(getBreadCrumbs(treeNode));
+						}
+					}
+				}
+			};
+			function filter(treeId, parentNode, childNodes) {
+	            if (!childNodes) return null;
+	            for (var i=0, l=childNodes.length; i<l; i++) {
+	                childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+	            }
+	            return childNodes;
+	        }
+			//初始化分类树
+			var tooltipParam = {
+				position: 'right',
+				onUpdate: function(content){
+					content.panel({
+						width: 230,
+						height:300,
+						border: false,
+						title:'分类'
+					});
+				},
+				content: function(){
+					jQuery.fn.zTree.init($("#categoryTreeRoot"), setting);
+					return $('#categoryTreeRoot');
+				},
+				showEvent: 'click',
+				onShow: function(){
+					var t = $(this);
+					t.tooltip('tip').unbind().bind('mouseenter', function(){
+						t.tooltip('show');
+					}).bind('mouseleave', function(){
+						t.tooltip('hide');
+					});
+					t.tooltip('tip').css({
+						padding:0
+					});
+				}
+			};
+			var tooltipParam3 = {
+				onUpdate: function(content){
+					content.panel({
+						width: 230,
+						height:300,
+						border: false,
+						title:'分类'
+					});
+				},
+				content: function(){
+					jQuery.fn.zTree.init($("#categoryTreeRoot"), setting);
+					return $('#categoryTreeRoot');
+				},
+				showEvent: 'click',
+				onShow: function(){
+					var t = $(this);
+					t.tooltip('tip').unbind().bind('mouseenter', function(){
+						t.tooltip('show');
+					}).bind('mouseleave', function(){
+						t.tooltip('hide');
+					});
+					t.tooltip('tip').css({
+						padding:0
+					});
+				}
+			};
+			$('#selectCategoryBtn').tooltip(tooltipParam);
+			$('#selectCategoryBtn2').tooltip(tooltipParam);
+			$('#selectCategoryBtn3').tooltip(tooltipParam3);
+		});
+		//根据树节点获取所有父节点
+		function getBreadCrumbs(treeNode){
+			var _a = new Array();
+			if(treeNode && treeNode.getParentNode()){
+				var _p = treeNode.getParentNode();
+				recurseParentNode(_p,_a);
+				_a.reverse();
+				_a.push(treeNode.name);
+			}
+			return _a.join('>');
+		}
+		//递归获取分类
+		function recurseParentNode(_p,_a){
+			if(_p){
+				_a.push(_p.name);
+				recurseParentNode(_p.getParentNode(),_a);
+			}
+		}
+		
+    </SCRIPT>
+</html>

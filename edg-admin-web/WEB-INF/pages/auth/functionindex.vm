@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>功能元素管理</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script>
+		$(function(){
+			//查询参数初始化
+			var pageSize = 20;
+			var pageNumber = 1;
+			var sortName = '';
+			var sortOrder = '';
+			$('#dg').datagrid({
+			    url:"list",
+			    toolbar:'#toolbar',
+				pagination:true,
+				singleSelect:true,
+				pageList: [10, 20, 30, 40, 50],
+			    pageSize:pageSize,
+			    pageNumber:pageNumber,
+			    sortOrder:sortOrder,
+			    sortName:sortName,
+				fit: true,   //满屏
+			   	columns:[[
+			   		{field:'id',title:'id', width:40, align:"center",sortable:true,"hidden":true},
+			   		{field:'name',title:'名称', width:200, align:"center",sortable:true},
+			   		{field:'code',title:'编码', width:200, align:"center", sortable:false},
+					{field:'creator',title:'创建者', width:100, align:"center", sortable:false},
+			   		{field:'creatDt',title:'创建时间', width:140, align:"center", sortable:false,
+	                     formatter:function(value,row,index){ 
+						 
+                         var unixTimestamp = new Date(value);  
+                         return unixTimestamp.toLocaleString();  
+                         } 
+					},
+			   		{field:'updateDt',title:'更新时间', width:140, align:"center", sortable:false,
+	                     formatter:function(value,row,index){  
+						 if(value==null||value==''){
+						 	return '';
+						 }						 
+                         var unixTimestamp = new Date(value);  
+                         return unixTimestamp.toLocaleString();  
+                         } 
+					
+					},
+			   		{field:'status',title:'状态', width:60, align:"center",sortable:true,
+						 formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "启用";  
+                         }else {
+					 		return "禁用"; 
+						 }
+                        }
+					}
+			   	]]
+			});
+			
+		})		
+    </script>
+</head>
+<body>
+	<table id="dg">
+	</table>
+	<div id="toolbar" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+			#if($tianjia)<a href="#" onclick="gotoAdd()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>#end
+			#if($bianji)<a href="#" onclick="gotoEdit()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>#end
+			#if($shanchu)<a href="#" onclick="delrow()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>#end
+		</div>
+		<div>
+			名称: <input id="qname"  name="name" class="easyui-textbox" type="text"  data-options="required:true"></input>
+			状态: 
+			<select id="qstatus" name="status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+				<option value="">不限</option>
+				<option value="1">启用</option>
+				<option value="2">禁用</option>
+			</select>
+			<a href="javascript:void()" onclick="doSearch()" class="easyui-linkbutton" iconCls="icon-search"></a>
+		</div>
+	</div>
+	
+	 <!--添加-->
+	<div id="addwin" closed="true" class="easyui-window"  title="添加" data-options="iconCls:'icon-save'" style="width:400px;height:300px;padding:10px;">
+	    <form id="addform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>所属菜单:</td>
+	    			<td><select class="easyui-combotree" data-options="required:true" url="../menu/menutree" name="menuId" style="width:156px;"/></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>名称:</td>
+	    			<td><input id="name" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>编码:</td>
+	    			<td><input id="code" name="code" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>状态:</td>
+					<td>
+    				<select style="width:80px;"  panelHeight="40" id="status" name="status" class="easyui-combobox" data-options="required:true"><option value="1" >启用</option><option  value="2">禁用</option></select>
+					</td>
+	    		</tr>				
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveForm()">保存</a>
+	    </div>
+	</div>
+	 <!--编辑-->
+	<div id="editwin" closed="true" class="easyui-window"  title="添加分类" data-options="iconCls:'icon-save'" style="width:400px;height:300px;padding:10px;">
+	    <form id="editform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td><input id="id" name="id" readonly="true" hidden="true" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>	
+	    		<tr>
+	    			<td>所属菜单:</td>
+	    			<td><select class="easyui-combotree" url="../menu/menutree" data-options="required:true" name="menuId" style="width:156px;"/></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>名称:</td>
+	    			<td><input id="name" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>	
+	    		<tr>
+	    			<td>编码:</td>
+	    			<td><input id="code" name="code" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>状态:</td>
+					<td>
+    				<select style="width:80px;"  panelHeight="40" id="status" name="status" class="easyui-combobox" data-options="required:true"><option value="1" >启用</option><option  value="2">禁用</option></select>
+					</td>
+	    		</tr>				
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="editForm()">保存</a>
+	    </div>
+	</div>
+</body>
+	<SCRIPT >
+		function doSearch(){
+			//查询参数初始化
+			var qname = $('#qname').val();
+			var statusVal = $('#qstatus').combobox('getValue');
+			//var menuId = $('#qmenuId').combotree('getValue');
+			
+			$("#dg").datagrid('load',{
+				name:qname,
+				status:statusVal
+				
+	    	});
+		}
+		
+		function gotoAdd(){
+			$('#addwin').form('clear');
+			 $('#addwin').window('open');
+		}
+		function gotoEdit(){
+			var row = $('#dg').datagrid('getSelected');
+            if (row){
+            	$('#editwin').window('open').window('setTitle','编辑');
+            	$('#editwin').form('load',row);
+            }
+		}
+		function saveForm(){
+			if(!$("#addform").form('validate')){
+				return;
+			}
+			
+			jQuery.ajax({
+				type : "post",
+				url  : "save",
+				datetype: "json",
+				data: $("#addform").serialize(),
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功');
+						$('#addwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error');
+				}
+			});
+			
+		}
+		
+		function editForm(){
+			if(!$("#editform").form('validate')){
+				return;
+			}
+			
+			jQuery.ajax({
+				type : "post",
+				url  : "update",
+				datetype: "json",
+				data: $("#editform").serialize(),
+				success: function(data){
+					if(data.status==200){
+						$('#editwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+				}
+			});		
+		}
+		
+		function delrow(){
+			var row = $('#dg').datagrid('getSelected');
+            if (row){
+			jQuery.messager.confirm('系统提示', "确认要删除吗？", function (data) {
+                if (data) {
+            			jQuery.ajax({
+            				type : "post",
+            				url  : "del",
+            				datetype: "json",
+            				data: {id:row.id},
+            				success: function(data){
+            					if(data.status==200){
+									jQuery.messager.alert('操作成功','操作成功')
+            						$('#dg').datagrid('reload');
+            					}
+            				},
+            				error:function(){
+            					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+            				}
+            			});	
+                }else {
+                    return;
+                }
+        	});
+			}
+		}
+    </SCRIPT>
+</html>

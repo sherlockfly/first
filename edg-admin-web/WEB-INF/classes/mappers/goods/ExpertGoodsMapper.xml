@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.ExpertGoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.drbwx.admin.po.ExpertGoods" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="subhead" property="subhead" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="cat_id" property="catId" jdbcType="INTEGER" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="creat_dt" property="creatDt" jdbcType="TIMESTAMP" />
+    <result column="upd_dt" property="updDt" jdbcType="TIMESTAMP" />
+    <result column="recommend" property="recommend" jdbcType="TINYINT" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="tiny_url" property="tinyUrl" jdbcType="VARCHAR" />
+    <result column="pic_def" property="picDef" jdbcType="VARCHAR" />
+    <result column="src_site" property="srcSite" jdbcType="VARCHAR" />
+    <result column="discount_url" property="discountUrl" jdbcType="VARCHAR" />
+    <result column="activity_url" property="activityUrl" jdbcType="VARCHAR" />
+    <result column="updtor" property="updtor" jdbcType="VARCHAR" />
+    <result column="comment_count" property="commentCount" jdbcType="INTEGER" />
+    <result column="collect_count" property="collectCount" jdbcType="INTEGER" />
+    <result column="up_count" property="upCount" jdbcType="INTEGER" />
+    <result column="down_count" property="downCount" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+   
+    <result column="pid1" property="catId1" jdbcType="INTEGER" />
+    <result column="c.name" property="name" jdbcType="VARCHAR" />
+    <result column="c2.names" property="names" jdbcType="VARCHAR" />
+    <result column="u.nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="check_date" property="check_date" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.drbwx.admin.po.ExpertGoods" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, title, subhead, status, cat_id, tags, creat_dt, upd_dt, recommend, url,fabiao_date,check_date, 
+    price, tiny_url, pic_def, src_site, discount_url, activity_url,updtor,brand,comment_count,collect_count,up_count,down_count,type
+  </sql>
+  <sql id="Union_Column_List">
+   e.id, uid, title, subhead, e.status, cat_id, tags, e.creat_dt, upd_dt, recommend, url,fabiao_date,check_date, 
+   price, tiny_url, pic_def, src_site, discount_url, activity_url,updtor,brand,comment_count,collect_count,up_count,down_count,type,
+   u.nickname,c.name,c.pid as pid1,c2.name as names
+  </sql>
+  
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from expert_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from expert_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.drbwx.admin.po.ExpertGoods" >
+    insert into expert_goods (uid, title, 
+      subhead, status, cat_id, 
+      tags, creat_dt, upd_dt, 
+      recommend, url, price, 
+      tiny_url, pic_def, src_site, 
+      src_url, discount_url, activity_url,updtor 
+      content)
+    values (#{uid,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+      #{subhead,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{catId,jdbcType=INTEGER}, 
+      #{tags,jdbcType=VARCHAR}, #{creatDt,jdbcType=TIMESTAMP}, #{updDt,jdbcType=TIMESTAMP}, 
+      #{recommend,jdbcType=TINYINT}, #{url,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{tinyUrl,jdbcType=VARCHAR}, #{picDef,jdbcType=VARCHAR}, #{srcSite,jdbcType=VARCHAR}, 
+      #{srcUrl,jdbcType=VARCHAR}, #{discountUrl,jdbcType=VARCHAR}, #{activityUrl,jdbcType=VARCHAR}, 
+      #{content,jdbcType=LONGVARCHAR},#{updtor,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.drbwx.admin.po.ExpertGoods" >
+    update expert_goods
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subhead != null" >
+        subhead = #{subhead,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>      
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="catId != null" >
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="creatDt != null" >
+        creat_dt = #{creatDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updDt != null" >
+        upd_dt = #{updDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recommend != null" >
+        recommend = #{recommend,jdbcType=TINYINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>      
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="tinyUrl != null" >
+        tiny_url = #{tinyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="picDef != null" >
+        pic_def = #{picDef,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSite != null" >
+        src_site = #{srcSite,jdbcType=VARCHAR},
+      </if>
+      <if test="discountUrl != null" >
+        discount_url = #{discountUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="activityUrl != null" >
+        activity_url = #{activityUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="updtor != null" >
+        updtor = #{updtor,jdbcType=VARCHAR},
+      </if>    
+       <if test="collectCount != null" >
+        collect_Count = #{collectCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="upCount != null" >
+        up_Count = #{upCount,jdbcType=INTEGER},
+      </if>
+       <if test="downCount != null" >
+        down_Count = #{downCount,jdbcType=INTEGER},
+      </if>  
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.drbwx.admin.po.ExpertGoods" >
+    update expert_goods
+    set uid = #{uid,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      subhead = #{subhead,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      cat_id = #{catId,jdbcType=INTEGER},
+      tags = #{tags,jdbcType=VARCHAR},
+      creat_dt = #{creatDt,jdbcType=TIMESTAMP},
+      upd_dt = #{updDt,jdbcType=TIMESTAMP},
+      recommend = #{recommend,jdbcType=TINYINT},
+      url = #{url,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      tiny_url = #{tinyUrl,jdbcType=VARCHAR},
+      pic_def = #{picDef,jdbcType=VARCHAR},
+      src_site = #{srcSite,jdbcType=VARCHAR},
+      src_url = #{srcUrl,jdbcType=VARCHAR},
+      discount_url = #{discountUrl,jdbcType=VARCHAR},
+      activity_url = #{activityUrl,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR},
+      updtor = #{updtor,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.drbwx.admin.po.ExpertGoods" >
+    update expert_goods
+    set uid = #{uid,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      subhead = #{subhead,jdbcType=VARCHAR},
+      status = #{statu
+      s,jdbcType=TINYINT},
+      cat_id = #{catId,jdbcType=INTEGER},
+      tags = #{tags,jdbcType=VARCHAR},
+      creat_dt = #{creatDt,jdbcType=TIMESTAMP},
+      upd_dt = #{updDt,jdbcType=TIMESTAMP},
+      recommend = #{recommend,jdbcType=TINYINT},
+      url = #{url,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      tiny_url = #{tinyUrl,jdbcType=VARCHAR},
+      pic_def = #{picDef,jdbcType=VARCHAR},
+      src_site = #{srcSite,jdbcType=VARCHAR},
+      src_url = #{srcUrl,jdbcType=VARCHAR},
+      discount_url = #{discountUrl,jdbcType=VARCHAR},
+      activity_url = #{activityUrl,jdbcType=VARCHAR},
+      updtor = #{updtor,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+	<select id="findByPage" resultMap="BaseResultMap"
+		parameterType="com.drbwx.admin.po.ExpertGoods">
+		select
+		<include refid="Union_Column_List" />
+		from expert_goods e left JOIN user u on e.uid = u.id left JOIN CATEGORY c on c.id = e.cat_id left JOIN category c2 on c.pid = c2.id
+		<include refid="Query_Where" />
+		ORDER BY e.id  desc
+	</select>
+	<sql id="Query_Where">
+		<where>
+			<if test="title!=null and title!='' ">
+				AND e.title LIKE  CONCAT('%', #{title}, '%')  
+			</if>
+			<if test="status!=null">
+				AND e.STATUS= #{status}
+			</if>
+			<if test="catId!=null">
+				AND e.cat_id= #{catId}
+			</if>
+			<if test="uid!=null">
+				AND e.uid= #{uid}
+			</if>	
+			<if test="id!=null">
+				AND e.id= #{id}
+			</if>
+			<if test="type!=null">
+				AND e.type = #{type}
+			</if>
+			<if test="catId1!=null and catId==null">
+				AND e.cat_id in (select id from category where pid = #{catId1})
+			</if>
+		</where>
+	</sql>  
+	
+	<select id="classificationone" resultType="com.drbwx.admin.dto.CategoryDto">
+	   SELECT * FROM CATEGORY WHERE GRADE = 1;
+	</select>
+	
+	<select id="classificationtwo" resultType="com.drbwx.admin.dto.CategoryDto">
+	   SELECT * FROM CATEGORY WHERE PID = #{id};
+	</select>
+	
+	<select id="classificationthree" resultType="com.drbwx.admin.dto.CategoryDto">
+	   SELECT * FROM CATEGORY WHERE PID = #{id};
+	</select>
+	
+	<select id="selectcatId" resultType="String">
+	   SELECT IFNULL(NAME,'未知') FROM CATEGORY WHERE ID = #{catId};
+	</select>
+	
+	<update id="savemodify">
+	   UPDATE EXPERT_GOODS SET CAT_ID = #{param2},URL = #{param3} WHERE ID = #{param1};
+	</update>
+	
+	<select id="selectuid" resultType="String">
+	   SELECT IFNULL(NICKNAME,'未知') FROM USER WHERE ID = #{uid};
+	</select>
+	
+	<select id="selectusername" resultType="Long">
+	   SELECT ID FROM USER WHERE NICKNAME = #{suername};
+	</select>
+	
+	<insert id="saverelated_goods">
+	   INSERT INTO related_goods (url,gid,name,pic_def,buy_count) VALUES (#{param3},#{param1},#{param4},#{param5},0);
+	</insert>
+  
+</mapper>

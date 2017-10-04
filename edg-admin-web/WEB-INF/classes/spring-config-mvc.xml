@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/mvc  
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+
+	<mvc:annotation-driven conversion-service="conversionService" />
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+	
+	<mvc:resources location="/static/" mapping="/static/**"
+		cache-period="864000" /><!-- 24 * 3600 * 10 -->
+			
+ 	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="/WEB-INF/pages/" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+				<prop key="contentType">text/html;charset=UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="velocityViewResolver"	class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="cache" value="false" />
+		<property name="suffix" value=".vm" />
+		<property name="order" value="1" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="dateToolAttribute" value="dateTool" />
+		<property name="numberToolAttribute" value="numberTool" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+	</bean>
+
+<!-- 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="defaultContentType" value="text/html" />
+		not by accept header
+		<property name="ignoreAcceptHeader" value="true"/>
+		by extension
+		<property name="mediaTypes">
+			<map>
+			    <entry key="xml" value="application/xml" />
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<property name="viewResolvers">
+			<list>
+                <ref bean="velocityViewResolver"/>
+			</list>
+		</property>
+  		<property name="defaultViews">
+			<list>
+			</list>
+		</property>
+ 	</bean> -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+       <property name="prefix" value="/WEB-INF/pages/" />
+       <property name="suffix" value=".jsp" /><!--��Ϊ��,����ʵ�����ѵ�������չ����ѡ����ͼ��������߼� -->
+   </bean>
+	<!-- locale related -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieName" value="_clientlocale" />
+		<property name="defaultLocale" value="zh_CN" />
+		<property name="cookieMaxAge" value="2147483647" />
+	</bean>
+	<!-- for application/json -->
+	<bean id="comListJson"
+		class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+	<!-- file upload related -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="5000000" />
+	</bean>
+    <mvc:interceptors>  
+        <mvc:interceptor>  
+            <mvc:mapping path="/**"/>  
+            <bean class="com.drbwx.admin.interceptor.LoginInterceptor"></bean>  
+        </mvc:interceptor>  
+    </mvc:interceptors> 
+
+</beans>
