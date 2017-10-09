@@ -64,26 +64,20 @@ public class GoodsCommentContoller extends BaseController {
 		
 		return new AjaxResult();
 	}
-	/*
-	@ResponseBody
-	@RequestMapping("/save")
-	public AjaxResult add(HttpServletRequest request,GoodsCommentDto dto){
-		dto.setCreatDt(new Date());
-		//dto.setUid(1l);
-		
-		GoodsCommentService.saveGoodsComment(dto);
-		
-		
-		return new AjaxResult();
-	}*/
-	
+	/**状态改变，删除
+	 * @author zpf   
+	 * @2017.10.8
+	 */
 	@ResponseBody
 	@RequestMapping("/Delectone")
 	public AjaxResult Delectone(int id){
 		goodsCommentService.Delectone(id);
 		return new AjaxResult();
 	}
-	
+	/**状态改变，恢复
+	 * @author zpf   
+	 * @2017.10.8
+	 */
 	@ResponseBody
 	@RequestMapping("/Recoveryone")
 	public AjaxResult Recoveryone(int id){

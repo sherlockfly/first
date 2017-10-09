@@ -173,7 +173,6 @@
 			var aid = $('#qaid').val();
 			var clientType = $('#qclientType').combobox('getValue');
 			var statusVal = $('#qstatus').combobox('getValue');
-			alert(statusVal);
 			$("#dg").datagrid('load',{
 				content:content,
 				uid:uid,

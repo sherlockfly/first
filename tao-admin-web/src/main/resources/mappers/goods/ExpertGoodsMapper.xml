@@ -236,29 +236,13 @@
 		</where>
 	</sql>  
 	
-	<select id="classificationone" resultType="com.drbwx.admin.dto.CategoryDto">
-	   SELECT * FROM CATEGORY WHERE GRADE = 1;
-	</select>
-	
-	<select id="classificationtwo" resultType="com.drbwx.admin.dto.CategoryDto">
+	<select id="Category" resultType="com.drbwx.admin.dto.CategoryDto">
 	   SELECT * FROM CATEGORY WHERE PID = #{id};
-	</select>
-	
-	<select id="classificationthree" resultType="com.drbwx.admin.dto.CategoryDto">
-	   SELECT * FROM CATEGORY WHERE PID = #{id};
-	</select>
-	
-	<select id="selectcatId" resultType="String">
-	   SELECT IFNULL(NAME,'未知') FROM CATEGORY WHERE ID = #{catId};
 	</select>
 	
 	<update id="savemodify">
 	   UPDATE EXPERT_GOODS SET CAT_ID = #{param2},URL = #{param3} WHERE ID = #{param1};
 	</update>
-	
-	<select id="selectuid" resultType="String">
-	   SELECT IFNULL(NICKNAME,'未知') FROM USER WHERE ID = #{uid};
-	</select>
 	
 	<select id="selectusername" resultType="Long">
 	   SELECT ID FROM USER WHERE NICKNAME = #{suername};

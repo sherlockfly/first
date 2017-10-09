@@ -1,9 +1,6 @@
 package com.drbwx.admin.web;
 
-import java.io.UnsupportedEncodingException;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +82,10 @@ public class MemberController extends BaseController {
 		return mv;
 		
 	}
-	
+	/**保存、修改备注
+	 * @author zpf   
+	 * @2017.10.8
+	 */
 	@ResponseBody
 	@RequestMapping("/saveremark")
 	public AjaxResult saveremark(int id,String myremark){

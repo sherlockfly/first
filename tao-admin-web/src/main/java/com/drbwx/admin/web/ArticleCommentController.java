@@ -30,7 +30,6 @@ public class ArticleCommentController extends BaseController{
 	@Autowired
 	private ArticleCommentService articleCommentService;
 	
-	
 	@RequestMapping("index")
 	public ModelAndView index(HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
@@ -61,10 +60,13 @@ public class ArticleCommentController extends BaseController{
 		
 		log.info(getCurrentOper(request).getRealName() + "修改 " +dto.getId());
 
-		
 		return new AjaxResult();
 	}
 	
+	/**改变状态，删除
+	 * @author zpf   
+	 * @2017.10.8
+	 */
 	@ResponseBody
 	@RequestMapping("/Delectone")
 	public AjaxResult Delectone(int id){
@@ -72,6 +74,10 @@ public class ArticleCommentController extends BaseController{
 		return new AjaxResult();
 	}
 	
+	/**改变状态，恢复
+	 * @author zpf   
+	 * @2017.10.8
+	 */
 	@ResponseBody
 	@RequestMapping("/Recoveryone")
 	public AjaxResult Recoveryone(int id){

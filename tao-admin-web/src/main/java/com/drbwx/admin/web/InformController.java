@@ -39,6 +39,10 @@ public class InformController extends BaseController {
 		return pageResult;
 	}
 	
+	/**改变状态，1已处理   2未处理
+	 * @author zpf   
+	 * @2017.10.8
+	 */
 	@ResponseBody
 	@RequestMapping("/change")
 	public AjaxResult change(int id,int status){

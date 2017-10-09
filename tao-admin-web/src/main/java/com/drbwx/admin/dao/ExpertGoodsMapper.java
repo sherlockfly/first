@@ -24,17 +24,9 @@ public interface ExpertGoodsMapper {
     
     ReturnPage<ExpertGoods> findByPage(PageQueryDto<ExpertGoods> query);
     
-    public List<CategoryDto> classificationone();
-    
-    public List<CategoryDto> classificationtwo(int id);
-    
-    public List<CategoryDto> classificationthree(int id);
+    public List<CategoryDto> Category(int id);
     
     public void savemodify(int id,int cat_id,String url);
-    
-    public String selectcatId(int catId);
-    
-    public String selectuid(int uid);
     
     public Long selectusername(String username);
     

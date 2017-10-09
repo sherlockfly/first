@@ -95,28 +95,8 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public String selectcatId(int catId) {
-		return articleMapper.selectcatId(catId);
-	}
-	
-	@Override
-	public String selectuid(int uid) {
-		return articleMapper.selectuid(uid);
-	}
-	
-	@Override
-	public List<CategoryDto> classificationone() {
-		return articleMapper.classificationone();
-	}
-
-	@Override
-	public List<CategoryDto> classificationtwo(int id) {
-		return articleMapper.classificationtwo(id);
-	}
-
-	@Override
-	public List<CategoryDto> classificationthree(int id) {
-		return articleMapper.classificationthree(id);
+	public List<CategoryDto> Category(int id) {
+		return articleMapper.Category(id);
 	}
 
 	@Override

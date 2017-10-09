@@ -39,13 +39,17 @@ public class GoodsController extends BaseController{
 		return mv;
 	}
 	
-	@RequestMapping("/indextwo")
+	/**精选审核页面
+	 * @author zpf   
+	 * @2017.10.8
+	 */
+	@RequestMapping("/UnCheckIndex")
 	public ModelAndView indextwo(HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
 		
 		getFunctions(request, mv,MenuConstant.JINGXUANGUANLI);
 		
-		mv.setViewName("/goods/goodsindextwo");
+		mv.setViewName("/goods/goodscheck");
 		mv.addObject("picRootPath","local");
 		return mv;
 	}
@@ -69,11 +73,14 @@ public class GoodsController extends BaseController{
 		return pageResult;
 	}
 	
-	//list
+	/**精选审核列表
+	 * @author zpf   
+	 * @2017.10.8
+	 */
 	@ResponseBody
-	@RequestMapping("/listtwo")
+	@RequestMapping("/UnCheckList")
 	public PageResultDto<ExpertGoodsDto> listtwo(ExpertGoodsDto dto,Integer page,Integer rows,String username){
-		
+		dto.setStatus((short) 1);
 		if(username!=""&&username!=null){
 			Long uid = expertGoodsService.selectusername(username);
 			if(uid==null){
@@ -99,12 +106,8 @@ public class GoodsController extends BaseController{
 		
 		log.info(oper.getRealName()+"修改" + dto.getId() + "-status:" + dto.getStatus());
 		
-		
-		
 		return new AjaxResult(200,"操作成功");
 	}
-	
-	
 	
 	//查看
 	@RequestMapping("/view")
@@ -118,40 +121,39 @@ public class GoodsController extends BaseController{
 		
 		return mv;
 	}	
-	
+	/**一级分类下拉
+	 * @author zpf   
+	 * @2017.10.8
+	 */	
 	@ResponseBody
-	@RequestMapping("/classificationone")
-	public Object classificationone(){
-//		System.out.println("classificationone1");
-//		List<CategoryDto> a =  expertGoodsService.classificationone();
-//		
-//		Iterator<CategoryDto> i = a.iterator();
-//		CategoryDto b = i.next();
-//		
-//		System.out.println("A:"+ b.getId());
-		return expertGoodsService.classificationone();
-	}
-	
-	@ResponseBody
-	@RequestMapping("/classificationtwo")
-	public Object classificationtwo(){
+	@RequestMapping("/CategoryOne")
+	public Object CategoryOne(){
 		int id = 2046;
-		return expertGoodsService.classificationtwo(id);
+		return expertGoodsService.Category(id);
 	}
-	
+	/**二级分类下拉
+	 * @author zpf   
+	 * @2017.10.8
+	 */	
 	@ResponseBody
-	@RequestMapping("/classificationthree")
-	public Object classificationthree(int id){
-		return expertGoodsService.classificationthree(id);
+	@RequestMapping("/CategoryTwo")
+	public Object CategoryTwo(int id){
+		return expertGoodsService.Category(id);
 	}
-	
+	/**保存分类URL修改
+	 * @author zpf   
+	 * @2017.10.8
+	 */	
 	@ResponseBody
 	@RequestMapping("/savemodify")
 	public AjaxResult savemodify(int id,int cat_id,String url){		
 		expertGoodsService.savemodify(id,cat_id,url);
 		return new AjaxResult(200,"操作成功");
 	}
-	
+	/**保存到infrom，未完成
+	 * @author zpf   
+	 * @2017.10.8
+	 */	
 	@ResponseBody
 	@RequestMapping("/saveAddone")
 	public AjaxResult saveAddone(int gid,int type,String url,String name){
@@ -159,23 +161,5 @@ public class GoodsController extends BaseController{
 		expertGoodsService.saverelated_goods(gid, type, url, name, pic_def);
 		return new AjaxResult(200,"操作成功");
 	}
-	
-//	@ResponseBody
-//	@RequestMapping("/selectcatId")
-//	public JSONObject selectcatId(int catId){	
-//		JSONObject A = new JSONObject();
-//		A.put("key", expertGoodsService.selectcatId(catId));
-//		return A;
-//	}
-//	
-//	@ResponseBody
-//	@RequestMapping("/selectuid")
-//	public JSONObject selectuid(int uid){	
-//		JSONObject A = new JSONObject();
-//		A.put("key", expertGoodsService.selectuid(uid));
-//		return A;
-//	}
-	
-	
-	
+
 }

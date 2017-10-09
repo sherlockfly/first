@@ -27,15 +27,7 @@ public interface ArticleMapper {
     
     ReturnPage<Article> findByPage(PageQueryDto<Article> pageQuery);
     
-    public String selectcatId(int catId);
-    
-    public String selectuid(int uid);
-    
-    public List<CategoryDto> classificationone();
-	
-	public List<CategoryDto> classificationtwo(int id);
-	
-	public List<CategoryDto> classificationthree(int id);
+	public List<CategoryDto> Category(int id);
 	
 	public void savemodify(int id,int cat_id);
 	

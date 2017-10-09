@@ -9,6 +9,33 @@
 	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
 	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
 	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<style type="text/css">
+         .tables{
+         	table-layout:fixed;
+         	width: 95%;
+         	border-collapse: collapse;
+            border-spacing: 0;
+         }
+         .tables tr td{
+         	word-wrap:break-word;
+         	text-align:left;
+         	width:50%;
+         	padding: 5px;
+         	border-bottom:1px solid black;
+         }
+         .tables tr th{
+         	text-align:left;
+         	width:50%;
+         	padding: 5px;
+         	border-top:1px solid black;
+         }
+         .tables tr{
+         	width:100%;
+         }
+         #tdtitle{
+            text-align:center;
+         }
+		</style>
 	<script>
 		$(function(){
 			//查询参数初始化
@@ -17,7 +44,7 @@
 			var sortName = '';
 			var sortOrder = '';
 			$('#dg').datagrid({
-			    url:"listtwo",
+			    url:"list",
 			    toolbar:'#toolbar',
 				pagination:true,
 				singleSelect:true,
@@ -140,10 +167,10 @@
 			<input id="qcatId1" class="easyui-combobox" style="width:100px" data-options="
                        valueField:'id',
                        textField:'name',
-                       url: 'classificationtwo',
+                       url: 'CategoryOne',
                        onSelect: function(rec2){
                            $('#qcatId').combobox('clear');  
-                           var url2 = 'classificationthree?id='+rec2.id;
+                           var url2 = 'CategoryTwo?id='+rec2.id;
                            $('#qcatId').combobox('reload', url2);
                    }"></td>
 			<input id="qcatId" class="easyui-combobox" style="width:100px" data-options="valueField:'id',textField:'name'"/>
@@ -162,8 +189,8 @@
 	</div>	
 	
 	<!-- 修改 -->
-	<div id="modify" class="easyui-window"  title="修改商品信息" align="center" style="width:700px;height:200px;"
-	data-options="iconCls:'icon-save',modal:true" closed="true" collapsible="false" minimizable="false" maximizable="false" resizable="false">
+	<div id="modify" class="easyui-window"  title="修改商品信息" align="center" style="width:700px;height:200px"
+	data-options="iconCls:'icon-save',modal:true" closed="true" minimizable="false" maximizable="false" resizable="false">
 	   <div class="easyui-layout" data-options="fit:true" style="width: 100%;">
 	   <div data-options="region:'north'" align="center" style="width: 100%;height:135px;" >
 	   <table style="width: 90%;height: 100%;">
@@ -171,10 +198,10 @@
 			    <td><input id="cc2" class="easyui-combobox" required="false" data-options="
                        valueField:'id',
                        textField:'name',
-                       url: 'classificationtwo',
+                       url: 'CategoryOne',
                        onSelect: function(rec2){
                            $('#cc3').combobox('clear');  
-                           var url2 = 'classificationthree?id='+rec2.id;
+                           var url2 = 'CategoryTwo?id='+rec2.id;
                            $('#cc3').combobox('reload', url2);
                    }"></td>
 			    <td><input id="cc3" class="easyui-combobox" required="false" data-options="valueField:'id',textField:'name'"/></td></tr>
@@ -191,18 +218,27 @@
 	</div>	
 	
 	<!-- 查看 -->
-	<div id="View_specific" class="easyui-window"  title="商品信息" align="center" style="width:800px;height:300px;padding:10px;"
-	modal:true" closed="true" collapsible="false" minimizable="false" maximizable="false" resizable="false">
-	    <table style="width:100%;height:100%" >
-			<tr align="center">
-				<td id="tdtitle" colspan="4"></td>
+	<div id="View_specific" class="easyui-window"  title="商品信息" align="center" style="width:800px;"
+	modal:true" closed="true" minimizable="false" maximizable="false" resizable="false">
+	    <table class="tables" >
+			<tr>
+				<th id="tdtitle" colspan="2"></th>
 			</tr>
-			<tr><td style="width:10%">状态：</td><td id="tdstatus" style="width:40%" ></td>  
-			    <td style="width:10%" >网址：</td><td id="tdurl" style="width:40%" ></td></tr>
-			<tr><td>分类：</td><td id="tdcatId"></td>  <td>发布人：</td><td id="tduid"></td></tr>
-			<tr><td>二级分类：</td><td id="tdcatId1"></td>  <td>创建时间：</td><td id="tdcreatDt"></td></tr>
-			<tr><td>标签：</td><td id="tdtags"></td>  <td>审核时间：</td><td id="tdcheck_date"></td></tr>
-			<tr><td>价格：</td><td id="tdprice"></td>  <td>发布时间：</td><td id="tdfabiao_date"></td></tr>
+			<tr><th>状态</th><th>网址</th></tr>
+			<tr><td id="tdstatus"></td>  
+			    <td id="tdurl"></td></tr>
+			<tr><th>一级分类</th><th>发布人</th></tr>
+			<tr><td id="tdcatId"></td>
+			    <td id="tduid"></td></tr>
+			<tr><th>二级分类</th><th>创建时间</th></tr>
+			<tr><td id="tdcatId1"></td>  
+			    <td id="tdcreatDt"></td></tr>
+			<tr><th>标签</th><th>审核时间</th></tr>
+			<tr><td id="tdtags"></td>  
+			    <td id="tdcheck_date"></td></tr>
+			<tr><th>价格</th><th>发布时间</th></tr>
+			<tr><td id="tdprice"></td>  
+			    <td id="tdfabiao_date"></td></tr>
 		</table>
 	</div>
 	
@@ -247,10 +283,12 @@
   </body>
 	<SCRIPT >
     
+    //上传图片效果
     function clp(){
     	   return  document.getElementById('postFild').click();
     	}
-    
+    	
+    //上传到inform,打开
     function gotoAdd(){
     var row = $('#dg').datagrid('getSelected');
      if (row){
@@ -261,6 +299,7 @@
             }
     }
     
+    //上传到inform,保存
     function saveAddone(){
       var row = $('#dg').datagrid('getSelected');
       var catId = row.catId;
@@ -286,6 +325,7 @@
 			});	
     }
     
+    //修改分类URL，保存
 	function savemodify(){
 	var row = $('#dg').datagrid('getSelected');
 	var cat_id = $('#cc3').combobox('getValue');
@@ -307,14 +347,14 @@
 				}
 			});	
 	}
-	
+	//清楚分类
 	$('#modify').window({
        onBeforeClose:function(){
           $('#cc2').combobox('clear');  
           $('#cc3').combobox('clear');
        }
     });
-   
+    //修改分类URL，打开
 	function doUpdate(){
 	   var row = $('#dg').datagrid('getSelected');
             if (row){
@@ -328,7 +368,7 @@
             alert("请选择需要修改信息的商品");
             }
 	   }
-	   
+	//打开查看
 	function doSee(){
 	   var row = $('#dg').datagrid('getSelected');
             if (row){
@@ -366,8 +406,8 @@
             }
 	   }
 	
+		//查询参数初始化
 		function doSearch(){
-			//查询参数初始化
 			var title = $('#qtitle').val();
 			var id = $('#qid').val();
 			var catId = $('#qcatId').combobox('getValue');

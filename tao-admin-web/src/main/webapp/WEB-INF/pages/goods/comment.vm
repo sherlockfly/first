@@ -117,37 +117,19 @@
 			});
 			
 		})
-		
-		function doDelect(){
-		var row = $('#dg').datagrid('getSelected');
-			if (row){
-			   alert(row.id);
-			}else{
-			   alert('请选择需要删除的评论');
-			}
-		}
-		
-		function doRecovery(){
-		var row = $('#dg').datagrid('getSelected');
-			if (row){
-			   alert(row.id);
-			}else{
-			   alert('请选择需要恢复的评论');
-			}
-		}
 	
 		function doSearch(){
 			//查询参数初始化
 			var content = $('#qcontent').val();
 			var uid = $('#quid').val();
-			var aid = $('#qaid').val();
+			var gid = $('#qaid').val();
 			var clientType = $('#qclientType').combobox('getValue');
 			var statusVal = $('#qstatus').combobox('getValue');
 			
 			$("#dg").datagrid('load',{
 				content:content,
 				uid:uid,
-				aid:aid,
+				gid:gid,
 				clientType:clientType,
 				status:statusVal
 	    	});

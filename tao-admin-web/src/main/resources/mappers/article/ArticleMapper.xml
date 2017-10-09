@@ -158,26 +158,10 @@
 		</where>
 	</sql>
 	
-	<select id="selectcatId" resultType="String">
-	   SELECT IFNULL(NAME,'未知') FROM CATEGORY WHERE ID = #{catId};
-	</select>
-	
-	<select id="selectuid" resultType="String">
-	   SELECT IFNULL(NICKNAME,'未知') FROM USER WHERE ID = #{uid};
-	</select>
-	
-	<select id="classificationone" resultType="com.drbwx.admin.dto.CategoryDto">
-	   SELECT * FROM CATEGORY WHERE GRADE = 1;
-	</select>
-	
-	<select id="classificationtwo" resultType="com.drbwx.admin.dto.CategoryDto">
+	<select id="Category" resultType="com.drbwx.admin.dto.CategoryDto">
 	   SELECT * FROM CATEGORY WHERE PID = #{id};
 	</select>
-	
-	<select id="classificationthree" resultType="com.drbwx.admin.dto.CategoryDto">
-	   SELECT * FROM CATEGORY WHERE PID = #{id};
-	</select>
-	
+
 	<update id="savemodify">
 	   UPDATE ARTICLE SET CAT_ID = #{param2} WHERE ID = #{param1};
 	</update>
@@ -186,6 +170,7 @@
 	   SELECT ID FROM USER WHERE NICKNAME = #{suername};
 	</select>
 	
+	<!-- 未完成 -->
 	<insert id="saverelated_goods">
 	   INSERT INTO related_goods (url,gid,name,pic_def,buy_count) VALUES (#{param3},#{param1},#{param4},#{param5},0);
 	</insert>

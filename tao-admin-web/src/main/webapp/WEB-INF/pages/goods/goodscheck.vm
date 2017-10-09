@@ -2,90 +2,369 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>商品审核</title>
+	<title>商品管理</title>
 	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
 	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
 	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
 	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
 	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
 	<script src=#springUrl('/static/js/yfcommon.js') ></script>
-	<style>
-		p.bold {font-style:bold}
-	</style>	
+	<style type="text/css">
+         .tables{
+         	table-layout:fixed;
+         	width: 95%;
+         	border-collapse: collapse;
+            border-spacing: 0;
+         }
+         .tables tr td{
+         	word-wrap:break-word;
+         	text-align:left;
+         	width:50%;
+         	padding: 5px;
+         	border-bottom:1px solid black;
+         }
+         .tables tr th{
+         	text-align:left;
+         	width:50%;
+         	padding: 5px;
+         	border-top:1px solid black;
+         }
+         .tables tr{
+         	width:100%;
+         }
+         #tdtitle{
+            text-align:center;
+         }
+		</style>
 	<script>
-		
+		$(function(){
+			//查询参数初始化
+			var pageSize = 20;
+			var pageNumber = 1;
+			var sortName = '';
+			var sortOrder = '';
+			$('#dg').datagrid({
+			    url:"UnCheckList",
+			    toolbar:'#toolbar',
+				pagination:true,
+				singleSelect:true,
+				pageList: [10,20,30],
+			    pageSize:pageSize,
+			    pageNumber:pageNumber,
+			    sortOrder:sortOrder,
+			    sortName:sortName,
+				rownumbers:true,
+				fit: true,   //满屏
+			   	columns:[[
+			   		{field:'id',title:'编号', width:50, align:"center",sortable:true},
+					{field:'picDef',title:'默认图片', width:120, align:"center",sortable:true,
+						formatter:
+                     		function(value, row, index){  
+							return  '<img  height="50" width="90" onclick="showinfo('+row.id+')" src="'+ value +'" >';
+                        }						
+					},
+					{field:'yulan',title:'预览', width:50, align:"center",sortable:true,
+						formatter:
+						function(value, row, index) {
+							return '<a target="_blank" href="http://drbwx.com/jingxuan/'+row.id+'">预览</a>';
+						}	
+					},
+					{field:'title',title:'标题', width:280, align:"center",sortable:true,
+						formatter:
+						function(value, row, index) {
+							return '<a href="javascript:void()" onclick="showinfo('+row.id+')">'+value+'</a>';
+						}
+					},
+			   		{field:'price',title:'价格', width:50, align:"center", sortable:false},
+			   		{field:'type',title:'类型', width:50, align:"center", sortable:false,
+    					formatter:  
+                             function(value, row, index){  
+                             if(value==1)  {
+                                 return "精选";  
+                             }else if(value==3){
+    					 		return "晒单"; 
+    						 }else {
+    						 	return value;
+    						 }
+                            }
+					},
+					{field:'nickname',title:'发布人', width:80, align:"center", sortable:false},
+					{field:'name',title:'分类', width:80, align:"center", sortable:false	},
+					{field:'tags',title:'标签', width:150, align:"center", sortable:false},
+					{field:'url',title:'原始网址', width:160, align:"center", sortable:false,
+						formatter:
+						function(value, row, index) {
+							return '<a target="_blank" href="'+value+'">'+value+'</a>';
+						}						
+					},
+					{field:'tinyUrl',title:'来源平台', width:260, align:"center", sortable:false},
+					{field:'creatDt',title:'创建时间', width:150, align:"center", sortable:false,
+	                     formatter:function(value,row,index){  
+                         var unixTimestamp = new Date(value);  
+                         return unixTimestamp.toLocaleString();  
+                         } 
+					},
+					{field:'fabiao_date',title:'发布时间', width:150, align:"center", sortable:false},
+			   		{field:'status',title:'状态', width:60, align:"center",sortable:true,
+						 formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "未审核";  
+                         }else if(value==2){
+					 		return "已审核"; 
+						 }else if(value == 3){
+						 
+						 	return "驳回"; 
+						 }else if(value == 4){
+						 
+						 	return "草稿"; 
+						 }else if(value == 5){
+						 
+						 	return "用户删除"; 
+						 }else {
+						 	return "未知";
+						 }
+                        }
+					},
+					{field:'check2',title:'审核通过', width:80, align:"center",
+						formatter:
+						function(value, row, index) {
+							return '<a href="javascript:void()" onclick="shenhe('+row.id+',2)">通过</a>';
+						}
+					},
+					{field:'check3',title:'审核不通过', width:80, align:"center",
+						formatter:
+						function(value, row, index) {
+							return '<a href="javascript:void()" onclick="shenhe('+row.id+',3)">驳回</a> ';
+						}
+					}
+			   	]]
+			});
+			
+		doSearch();			
+		})
     </script>
 </head>
 <body>
- <form id="editform" method="post">
-		<center>
-			<a target="_blank" href="http://www.drbwx.com/jingxuan/${goods.id}">预览    	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${goods.id},3)" iconCls="icon-no">  驳回  </a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${goods.id},2)" iconCls="icon-ok">  通过  </a> </a>    
-		<h5>${goods.title}</h5>   作者：${goods.uid}
-		<hr />
-		<p class="bold">${goods.subhead}</p>
-		<hr />
-		${goods.content}
-		<hr />
-		</center>
-	    			<table cellpadding="5">
-	    		<tr>
-	    			<td>分类:</td>
-	    			<td>${goods.catId}
-					</td>
-	    			<td>品牌:</td>
-	    			<td>
-	    				${goods.brand}
-					</td>					
-				</tr>		
-	    		<tr>
-	    			<td>价格:</td>
-	    			<td>
-						${goods.price}
-					</td>
-						<td>状态:</td>
-	    			<td><font color="red">
-						${goods.status}
-						#if($!goods.status ==  0)  
-							状态未知
-                        #elseif($!goods.status == 1)  
-								审核中
-                        #elseif($!goods.status == 2)  
-								审核通过
-						#elseif($!goods.status == 3)  
-								审核未通过  
-                        #else  
-								其他状态
-                        #end  						
-					</font></td>
-	    		</tr>
-	    		<tr>
-					<td>创建日期:</td>
-	    			<td>
-						$!date.format('yyyy-MM-dd HH:mm:ss ',$!goods.creatDt)
-					</td>
-					<td>标签:</td>
-	    			<td>${goods.tags}</td>
-				</tr>	
-				<tr>
-	    		
-					<td>直达链接:</td>
-	    			<td><a href="${goods.url}" target="_blank">${goods.url}</a></td>
-	    		</tr>	
-
-		    	<tr>
-	    			<td>摘要:</td>
-	    			<td>
-					<textarea id="subhead" name="subhead" class="easyui-validatebox" data-options="required:true" style="width: 199px; height: 60px;">${goods.subhead}</textarea>
-					</td>
-	    		</tr>
-	    	</table>
-	    </form>
-		<br />
-		<br />
-	    <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${goods.id},3)" iconCls="icon-no">  驳回  </a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${goods.id},2)" iconCls="icon-ok">  通过  </a>
-	    </div>
+	<table id="dg">
+	</table>
+	<div id="toolbar" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+			#if($tianjia)<a href="#" onclick="gotoAdd()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>#end
+			#if($bianji)<a href="#" onclick="gotoEdit()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>#end
+			#if($shanchu)<a href="#" onclick="delrow()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>#end
+			<a href="javascript:void()" onclick="doSee()" class="easyui-linkbutton"  iconCls="icon-large-smartart" plain="true">查看</a>
+			<a href="javascript:void()" onclick="doUpdate()" class="easyui-linkbutton"  iconCls="icon-edit" plain="true">修改</a>
+		</div>
+		<div>
+		               分类: 
+			<input id="qcatId1" class="easyui-combobox" style="width:100px" data-options="
+                       valueField:'id',
+                       textField:'name',
+                       url: 'CategoryOne',
+                       onSelect: function(rec2){
+                           $('#qcatId').combobox('clear');  
+                           var url2 = 'CategoryTwo?id='+rec2.id;
+                           $('#qcatId').combobox('reload', url2);
+                   }"></td>
+			<input id="qcatId" class="easyui-combobox" style="width:100px" data-options="valueField:'id',textField:'name'"/>
+			&nbspID: <input id="qid"  name="qid" class="easyui-textbox" type="text" style="width:100px" data-options="required:true"></input>
+			&nbsp达人id: 
+			<input id="quid"  name="quid" class="easyui-textbox" type="text" style="width:100px" data-options="required:true"></input>
+			&nbsp达人昵称: 
+			<input id="username"  name="username" class="easyui-textbox" type="text" style="width:100px" data-options="required:true"></input>
+			&nbsp标题： <input id="qtitle"  name="qtitle" class="easyui-textbox" type="text" style="width:100px" data-options="required:true"></input>
+			<a href="javascript:void()" onclick="doSearch()" class="easyui-linkbutton" iconCls="icon-search"></a>
+		</div>
+	</div>
+	
+	 <!--编辑-->
+	<div id="editwin" closed="true" class="easyui-window"  title="精选详情" data-options="iconCls:'icon-save'" style="width:800px;height:400px;padding:10px;">
+	</div>	
+	
+	<!-- 修改 -->
+	<div id="modify" class="easyui-window"  title="修改商品信息" align="center" style="width:700px;height:200px"
+	data-options="iconCls:'icon-save',modal:true" closed="true" minimizable="false" maximizable="false" resizable="false">
+	   <div class="easyui-layout" data-options="fit:true" style="width: 100%;">
+	   <div data-options="region:'north'" align="center" style="width: 100%;height:135px;" >
+	   <table style="width: 90%;height: 100%;">
+			<tr><td>分类：</td>
+			    <td><input id="cc2" class="easyui-combobox" required="false" data-options="
+                       valueField:'id',
+                       textField:'name',
+                       url: 'CategoryOne',
+                       onSelect: function(rec2){
+                           $('#cc3').combobox('clear');  
+                           var url2 = 'CategoryTwo?id='+rec2.id;
+                           $('#cc3').combobox('reload', url2);
+                   }"></td>
+			    <td><input id="cc3" class="easyui-combobox" required="false" data-options="valueField:'id',textField:'name'"/></td></tr>
+			<tr><td>原始网址：</td><td colspan="2">
+			<textarea type="text" id="cc4" required="false" style="overflow:hidden;resize:none;width:500px;height:50px;">
+			</textarea>
+			</td></tr>
+		</table>
+		</div>
+		<div data-options="region:'center'" style="background-color: #F4F4F4;" align="right">
+		<a onclick="savemodify()" class="easyui-linkbutton" data-options="iconCls:'icon-save'" plain="true">保存</a>
+		</div>
+		</div>
+	</div>
+	
+	<!-- 查看 -->
+	<div id="View_specific" class="easyui-window"  title="商品信息" align="center" style="width:800px;"
+	modal:true" closed="true" minimizable="false" maximizable="false" resizable="false">
+	    <table class="tables" >
+			<tr>
+				<th id="tdtitle" colspan="2"></th>
+			</tr>
+			<tr><th>状态</th><th>网址</th></tr>
+			<tr><td id="tdstatus"></td>  
+			    <td id="tdurl"></td></tr>
+			<tr><th>一级分类</th><th>发布人</th></tr>
+			<tr><td id="tdcatId"></td>
+			    <td id="tduid"></td></tr>
+			<tr><th>二级分类</th><th>创建时间</th></tr>
+			<tr><td id="tdcatId1"></td>  
+			    <td id="tdcreatDt"></td></tr>
+			<tr><th>标签</th><th>审核时间</th></tr>
+			<tr><td id="tdtags"></td>  
+			    <td id="tdcheck_date"></td></tr>
+			<tr><th>价格</th><th>发布时间</th></tr>
+			<tr><td id="tdprice"></td>  
+			    <td id="tdfabiao_date"></td></tr>
+		</table>
+	</div>	
+	
+	
 </body>
+	<SCRIPT >
+    //修改分类URL，保存
+	function savemodify(){
+	var row = $('#dg').datagrid('getSelected');
+	var cat_id = $('#cc3').combobox('getValue');
+	var url = $('#cc4').val();
+	
+	jQuery.ajax({
+				type : "post",
+				url  : "savemodify",
+				datetype: "json",
+				data: {id:row.id,cat_id:cat_id,url:url},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#modify').window('close');
+						$('#dg').datagrid('reload');
+					}s
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+				}
+			});	
+	}
+	//清楚分类下拉
+	$('#modify').window({
+       onBeforeClose:function(){
+          $('#cc2').combobox('clear');  
+          $('#cc3').combobox('clear');
+       }
+    });
+    //修改分类URL，打开
+	function doUpdate(){
+	   var row = $('#dg').datagrid('getSelected');
+            if (row){
+                if(row.catId1>0){
+                $('#cc2').combobox('select', row.catId1);
+                $('#cc3').combobox('select', row.catId);
+                }
+                $('#cc4').val(row.url);
+            	$('#modify').window('open');  	
+            }else{
+            alert("请选择需要修改信息的商品");
+            }
+	   }
+	   //打开查看
+	   function doSee(){
+	   var row = $('#dg').datagrid('getSelected');
+            if (row){
+                var rstatus = "未知";
+                         if(row.status==1)  {
+                             rstatus = "未审核";  
+                         }else if(row.status == 2){
+					 		rstatus = "已审核"; 
+						 }else if(row.status == 3){
+						 	rstatus = "驳回"; 
+						 }else if(row.status == 4){
+						 	rstatus = "草稿"; 
+						 }else if(row.status == 5){
+						 	rstatus = "用户删除"; 
+						 }else{
+						    rstatus = "未知"; 
+						 }
+                $("#tdtitle").html("标题："+row.title);
+                $("#tdstatus").html(rstatus);
+                $("#tdcatId").html(row.names);
+                $("#tdcatId1").html(row.name);
+                
+                $("#tdtags").html(row.tags);
+                $("#tdurl").html(row.url);
+                $("#tduid").html(row.nickname);
+                $("#tdcreatDt").html(row.creatDt);
+                
+                $("#tdprice").html(row.price);
+                $("#tdcheck_date").html(row.check_date);
+                $("#tdfabiao_date").html(row.fabiao_date);
+            
+            	$('#View_specific').window('open');  	
+            }else{
+            alert("请选择需要查看信息的商品");
+            }
+	   }
+	
+		//查询参数初始化
+		function doSearch(){
+			var title = $('#qtitle').val();
+			var id = $('#qid').val();
+			var catId = $('#qcatId').combobox('getValue');
+			var username = $('#username').val();
+			var uid = $('#quid').val();
+			var catId1 = $('#qcatId1').combobox('getValue');
+			
+			$("#dg").datagrid('load',{
+				title:title,
+				id:id,
+				catId:catId,
+				uid:uid,
+				username:username,
+				catId1:catId1
+	    	});
+		}
+		
+		function showinfo(id){
+			
+			$('#editwin').window('refresh', 'view?id='+id);
+			
+			$('#editwin').window('open');
+		}
+		
+    	function shenhe(id,status){
+			jQuery.ajax({
+				type : "post",
+				url  : "check",
+				datetype: "json",
+				data: {id:id,status:status},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#editwin').window('close');
+						$('#dg').datagrid('reload');
+					}s
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+				}
+			});	
+    	}
+		
+    </SCRIPT>
 </html>

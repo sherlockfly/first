@@ -4,7 +4,6 @@ package com.drbwx.admin.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,33 +110,13 @@ public class ExpertGoodsServiceImpl implements ExpertGoodsService {
 	}
 
 	@Override
-	public List<CategoryDto> classificationone() {
-		return expertGoodsMapper.classificationone();
-	}
-
-	@Override
-	public List<CategoryDto> classificationtwo(int id) {
-		return expertGoodsMapper.classificationtwo(id);
-	}
-
-	@Override
-	public List<CategoryDto> classificationthree(int id) {
-		return expertGoodsMapper.classificationthree(id);
+	public List<CategoryDto> Category(int id) {
+		return expertGoodsMapper.Category(id);
 	}
 
 	@Override
 	public void savemodify(int id, int cat_id, String url) {
 		expertGoodsMapper.savemodify(id, cat_id, url);
-	}
-
-	@Override
-	public String selectcatId(int catId) {
-		return expertGoodsMapper.selectcatId(catId);
-	}
-	
-	@Override
-	public String selectuid(int uid) {
-		return expertGoodsMapper.selectuid(uid);
 	}
 
 	@Override
