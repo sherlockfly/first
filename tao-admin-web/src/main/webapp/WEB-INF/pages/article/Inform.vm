@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>商品管理</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script>
+		$(function(){
+			//查询参数初始化
+			var pageSize = 20;
+			var pageNumber = 1;
+			var sortName = '';
+			var sortOrder = '';
+			$('#dg').datagrid({
+			    url:"list",
+			    toolbar:'#toolbar',
+				pagination:true,
+				singleSelect:true,
+				pageList: [10,20,30],
+			    pageSize:pageSize,
+			    pageNumber:pageNumber,
+			    sortOrder:sortOrder,
+			    sortName:sortName,
+				rownumbers:true,
+				fit: true,   //满屏
+			   	columns:[[
+			    {field:'id',title:'编号', width:50, align:"center",sortable:true},
+			   	{field:'content',title:'内容', width:200, align:"center", sortable:false},
+			   	{field:'type',title:'类型', width:80, align:"center", sortable:false,
+    					formatter:  
+                             function(value, row, index){  
+                             if(value==1)  {
+                                 return "精选举报";  
+                             }else if(value==2){
+    					 		return "会选举报"; 
+    						 }else if(value==3){
+    						 	return "评论举报";
+    						 }else{
+    						    return "未知";
+    						 }
+                            }
+                },
+			   	{field:'creatDt',title:'创建时间', width:150, align:"center", sortable:false},
+			   	{field:'uid',title:'用户ID', width:50, align:"center", sortable:false},
+			   	{field:'username',title:'用户', width:100, align:"center", sortable:false},
+			   	{field:'operator',title:'处理人员ID', width:100, align:"center", sortable:false},
+			   	{field:'adminname',title:'处理人员', width:100, align:"center", sortable:false},
+			   	{field:'status',title:'状态', width:50, align:"center", sortable:false,
+    					formatter:  
+                             function(value, row, index){  
+                             if(value==1)  {
+                                 return "已处理";  
+                             }else if(value==2){
+    						 	 return "未处理";
+    						 }else{
+                                 return "未知"; 
+    						 }
+                            }
+                }
+			   	]]
+			});
+
+		})		
+    </script>
+</head>
+<body>
+	<table id="dg">
+	</table>
+	<div id="toolbar" style="padding:5px;height:auto">
+	<a href="javascript:void()" onclick="doUpdate(1)" class="easyui-linkbutton"  iconCls="icon-reload">已处理</a>
+	<a href="javascript:void()" onclick="doUpdate(2)" class="easyui-linkbutton"  iconCls="icon-reload">未处理</a>
+	</div>
+	
+			
+</body>
+	<SCRIPT >    
+	   function doUpdate(i){
+	   var row = $('#dg').datagrid('getSelected');
+            if (row){
+                jQuery.ajax({
+				type : "post",
+				url  : "change",
+				datetype: "json",
+				data: {id:row.id,status:i},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功');
+						$('#dg').datagrid('reload');
+					}s
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+				}
+			});	
+            }else{
+            alert("请选择需要修改信息的商品");
+            }
+	   }
+    </SCRIPT>
+</html>

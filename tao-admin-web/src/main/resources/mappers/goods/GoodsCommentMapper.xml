@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.GoodsCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.drbwx.admin.po.GoodsComment" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="gid" property="gid" jdbcType="BIGINT" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="creat_dt" property="creatDt" jdbcType="TIMESTAMP" />
+    <result column="reuid" property="reuid" jdbcType="BIGINT" />
+    <result column="is_huifu" property="isHuifu" jdbcType="TINYINT" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="client_ip" property="clientIp" jdbcType="VARCHAR" />
+    <result column="client_type" property="clientType" jdbcType="TINYINT" />
+    <result column="as_top" property="asTop" jdbcType="TINYINT" />
+    <result column="u.nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="head_Iocn" property="headIocn" jdbcType="VARCHAR" />
+    
+    
+    <result column="e.title" property="title" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, uid, gid, content, creat_dt, reuid, is_huifu, pid, status, client_ip, client_type, 
+    as_top
+  </sql>
+  <sql id="union_column_List" >
+    c.id, c.uid, c.gid, c.content, c.creat_dt, c.reuid, c.is_huifu, c.pid, c.status, c.client_ip, c.client_type, 
+    c.as_top,u.nickname,u.head_iocn,e.title
+  </sql>  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_comment
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from goods_comment
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.drbwx.admin.po.GoodsComment" useGeneratedKeys="true" keyProperty="id">
+    insert into goods_comment (uid, gid, content, 
+      creat_dt, reuid, is_huifu, 
+      pid, status, client_ip, 
+      client_type, as_top)
+    values (#{uid,jdbcType=BIGINT}, #{gid,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, 
+      #{creatDt,jdbcType=TIMESTAMP}, #{reuid,jdbcType=BIGINT}, #{isHuifu,jdbcType=TINYINT}, 
+      #{pid,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{clientIp,jdbcType=VARCHAR}, 
+      #{clientType,jdbcType=TINYINT}, #{asTop,jdbcType=TINYINT})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.drbwx.admin.po.GoodsComment" >
+    update goods_comment
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="gid != null" >
+        gid = #{gid,jdbcType=BIGINT},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="creatDt != null" >
+        creat_dt = #{creatDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reuid != null" >
+        reuid = #{reuid,jdbcType=BIGINT},
+      </if>
+      <if test="isHuifu != null" >
+        is_huifu = #{isHuifu,jdbcType=TINYINT},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="clientIp != null" >
+        client_ip = #{clientIp,jdbcType=VARCHAR},
+      </if>
+      <if test="clientType != null" >
+        client_type = #{clientType,jdbcType=TINYINT},
+      </if>
+      <if test="asTop != null" >
+        as_top = #{asTop,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+	<select id="findByPage" resultMap="BaseResultMap"
+		parameterType="com.drbwx.admin.po.GoodsComment">
+		select
+		<include refid="union_column_List" />
+		from GOODS_COMMENT c left join user u on c.uid = u.id left join expert_goods e on c.gid = e.id
+		<include refid="Query_Where" />
+		ORDER BY id desc
+	</select>
+	<sql id="Query_Where">
+		<where>
+			<if test="content!=null and content!='' ">
+				AND c.content LIKE  CONCAT('%', #{content}, '%')  
+			</if>
+			<if test="status!=null">
+				AND c.STATUS= #{status}
+			</if>
+			<if test="id!=null">
+				AND c.id= #{id}
+			</if>	
+			<if test="gid!=null">
+				AND c.gid= #{gid}
+			</if>	
+			<if test="uid!=null">
+				AND c.uid= #{uid}
+			</if>	
+			<if test="asTop!=null">
+				AND c.as_Top= #{asTop}
+			</if>
+			<if test="clientType!=null">
+				AND c.CLIENT_TYPE= #{clientType}
+			</if>	
+		</where>
+	</sql>
+	
+	<update id="Delectone" parameterType="int">
+	  UPDATE goods_comment SET status = 2 WHERE ID = #{id};
+	</update>
+	
+	<update id="Recoveryone" parameterType="int">
+	  UPDATE goods_comment SET status = 1 WHERE ID = #{id};
+	</update>  
+</mapper>

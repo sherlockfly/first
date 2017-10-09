@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>审核</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script>
+		$(function(){
+			//查询参数初始化
+			var pageSize = 20;
+			var pageNumber = 1;
+			var sortName = '';
+			var sortOrder = '';
+			$('#dg').datagrid({
+			    url:"list",
+			    toolbar:'#toolbar',
+				pagination:true,
+				singleSelect:true,
+				pageList: [10, 20, 30, 40, 50],
+			    pageSize:pageSize,
+			    pageNumber:pageNumber,
+			    sortOrder:sortOrder,
+			    sortName:sortName,
+				rownumbers:true,
+				fit: true,   //满屏
+			   	columns:[[
+			   		{field:'id',title:'id', width:40, align:"center",sortable:true,"hidden":true},
+			   		{field:'catId',title:'分类', width:100, align:"center",sortable:true},
+			   		{field:'tags',title:'标签', width:100, align:"center", sortable:false},
+					{field:'phone',title:'电话', width:100, align:"center", sortable:false},
+					{field:'weixin',title:'微信号', width:100, align:"center", sortable:false},
+			   		{field:'applyDate',title:'申请时间', width:140, align:"center", sortable:false,
+                     	formatter:function(value,row,index){  
+						 if(value==null||value==''){
+						 	return '';
+						 }
+                         var unixTimestamp = new Date(value); 
+                         return unixTimestamp.toLocaleString();  
+                         } 		
+					},
+			   		{field:'email',title:'邮箱', width:140, align:"center", sortable:false},
+			   		{field:'status',title:'申请状态', width:60, align:"center",sortable:true,
+						 formatter:  
+                         function(value, row, index){  
+                         if(value==1)  {
+                             return "审核中";  
+                         }else if(value==2){
+					 		return "已通过"; 
+						 }else {
+						 	return "未通过"; 
+						 }
+                        }
+					},
+					{field:'check2',title:'审核通过', width:80, align:"center",
+						formatter:
+						function(value, row, index) {
+							return '<a href="javascript:void()" onclick="shenhe('+row.id+',2)">通过</a>';
+						}
+					},
+					{field:'check3',title:'审核不通过', width:80, align:"center",
+						formatter:
+						function(value, row, index) {
+							return '<a href="javascript:void()" onclick="shenhe('+row.id+',3)">不通过</a> ';
+						}
+					}					
+			   	]]
+			});
+			
+		})		
+    </script>
+</head>
+<body>
+	<table id="dg">
+	</table>
+	<div id="toolbar" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+		</div>
+		<div>
+			名称: <input id="qname"  name="qname" class="easyui-textbox" type="text"  data-options="required:true"></input>
+			&nbsp状态: 
+			<select id="qstatus" name="qstatus" class="easyui-combobox" panelHeight="auto" style="width:100px">
+				<option value="">不限</option>
+				<option value="1">未审核</option>
+				<option value="2">通过</option>
+				<option value="3">未通过</option>
+			</select>
+			<a href="javascript:void()" onclick="doSearch()" class="easyui-linkbutton" iconCls="icon-search"></a>
+		</div>
+	</div>
+	
+	<div id="addwin" closed="true" class="easyui-window"  title="添加分类" data-options="iconCls:'icon-save'" style="width:400px;height:300px;padding:10px;">
+	    <form id="addform" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>角色代码:</td>
+	    			<td><input id="roleCode" name="roleCode" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>角色名称:</td>
+	    			<td><input id="name" name="name" class="easyui-validatebox textbox" data-options="required:true" type="text"  data-options="required:true"></input></td>
+	    		</tr>				
+	    		<tr>
+	    			<td>状态:</td>
+					<td>
+    				<select style="width:100px;" data-options="required:true" panelHeight="40" id="edit_status" name="status" class="easyui-combobox" ><option value="1">启用</option><option  value="2">禁用</option></select>
+					</td>
+	    		</tr>					
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveForm()">保存</a>
+	    </div>
+	</div>
+
+	
+
+</body>
+	<script >
+    	function doSearch(){
+    		//查询参数初始化
+    		var name = $('#qname').val();
+    		var statusVal = $('#qstatus').combobox('getValue');
+    		
+    		$("#dg").datagrid('load',{
+    			name,name,
+    			status:statusVal
+        	});
+    	}
+    	
+    	function goshenhe(id){
+    		var row = $('#dg').datagrid('getSelected');
+            if (row){
+            	$('#editwin').window('open').window('setTitle','编辑');
+            	$('#editwin').form('load',row);
+            }
+    	}
+		
+    	function shenhe(id,status){
+			jQuery.ajax({
+				type : "post",
+				url  : "savecheck",
+				datetype: "json",
+				data: {id:id,status:status},
+				success: function(data){
+					if(data.status==200){
+						jQuery.messager.alert('操作成功','操作成功')
+						$('#editwin').window('close');
+						$('#dg').datagrid('reload');
+					}
+				},
+				error:function(){
+					jQuery.messager.alert('操作失败','操作失败，系统异常','error')
+				}
+			});	
+    	}
+
+    </script>
+</html>

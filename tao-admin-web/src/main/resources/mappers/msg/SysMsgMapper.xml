@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.SysMsgMapper">
+	<resultMap id="BaseResultMap" type="com.drbwx.admin.po.SysMsg">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="TINYINT" />
+		<result column="creat_dt" property="creatDt" jdbcType="TIMESTAMP" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, title, content, type, creat_dt, creator, status
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from sys_msg
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from sys_msg
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.drbwx.admin.po.SysMsg">
+		insert into sys_msg (title, content,
+		type, creat_dt, creator,
+		status)
+		values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+		#{type,jdbcType=TINYINT}, #{creatDt,jdbcType=TIMESTAMP},
+		#{creator,jdbcType=VARCHAR},
+		#{status,jdbcType=TINYINT})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.drbwx.admin.po.SysMsg">
+		update sys_msg
+		<set>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=TINYINT},
+			</if>
+			<if test="creatDt != null">
+				creat_dt = #{creatDt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="creator != null">
+				creator = #{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="findByPage" resultMap="BaseResultMap" parameterType="com.drbwx.admin.po.SysMsg">
+		select
+		<include refid="Base_Column_List" />
+		from sys_msg
+		<include refid="Query_Where" />
+		ORDER BY id desc
+	</select>
+	<sql id="Query_Where">
+		<where>
+			<if test="content!=null and content!='' ">
+				AND content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="status!=null">
+				AND STATUS= #{status}
+			</if>
+			<if test="type!=null">
+				AND type= #{type}
+			</if>
+		</where>
+	</sql>
+</mapper>

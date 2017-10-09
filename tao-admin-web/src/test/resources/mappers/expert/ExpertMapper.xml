@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.ExpertMapper">
+	<resultMap id="BaseResultMap" type="com.drbwx.admin.po.Expert">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="uid" property="uid" jdbcType="BIGINT" />
+		<result column="homepage" property="homepage" jdbcType="VARCHAR" />
+		<result column="fans_num" property="fansNum" jdbcType="BIGINT" />
+		<result column="intro" property="intro" jdbcType="VARCHAR" />
+		<result column="pic" property="pic" jdbcType="VARCHAR" />
+		<result column="creat_date" property="creatDate" jdbcType="TIMESTAMP" />
+		<result column="upd_date" property="updDate" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, uid, homepage, fans_num, intro, pic, creat_date, upd_date, status
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from expert
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from expert
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.drbwx.admin.po.Expert">
+		insert into expert (uid, homepage,
+		fans_num, intro, pic,
+		creat_date, upd_date, status
+		)
+		values (#{uid,jdbcType=BIGINT}, #{homepage,jdbcType=VARCHAR},
+		#{fansNum,jdbcType=BIGINT}, #{intro,jdbcType=VARCHAR},
+		#{pic,jdbcType=VARCHAR},
+		#{creatDate,jdbcType=TIMESTAMP}, #{updDate,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
+		)
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.drbwx.admin.po.Expert">
+		update expert
+		<set>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=BIGINT},
+			</if>
+			<if test="homepage != null">
+				homepage = #{homepage,jdbcType=VARCHAR},
+			</if>
+			<if test="fansNum != null">
+				fans_num = #{fansNum,jdbcType=BIGINT},
+			</if>
+			<if test="intro != null">
+				intro = #{intro,jdbcType=VARCHAR},
+			</if>
+			<if test="pic != null">
+				pic = #{pic,jdbcType=VARCHAR},
+			</if>
+			<if test="creatDate != null">
+				creat_date = #{creatDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updDate != null">
+				upd_date = #{updDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="findByPage" resultMap="BaseResultMap"
+		parameterType="com.drbwx.admin.po.Expert">
+		select
+		<include refid="Base_Column_List" />
+		from expert
+		<include refid="Query_Where" />
+		ORDER BY id desc
+	</select>
+	<sql id="Query_Where">
+		<where>
+			<if test="uid!=null and uid!='' ">
+				AND UID= #{uid}
+			</if>
+			<if test="status!=null and status!='' ">
+				AND STATUS= #{status}
+			</if>
+		</where>
+	</sql>
+</mapper>

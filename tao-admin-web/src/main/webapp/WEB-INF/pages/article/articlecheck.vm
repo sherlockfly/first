@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>会选文章审核</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<script>
+		
+    </script>
+</head>
+<body>
+ <form id="editform" method="post">
+		<center>
+			<a target="_blank" href="http://www.drbwx.com/huixuan/${article.id}">预览    	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${article.id},3)" iconCls="icon-no">  驳回  </a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${article.id},2)" iconCls="icon-ok">  通过  </a> </a>    
+		<h1>${article.title}</h1>   作者：${article.uid}
+		<hr />
+		${article.subhead}
+		<hr />
+		${article.content}
+		<hr />
+		</center>
+	    			<table cellpadding="5">
+	    		<tr>
+	    			<td>分类:</td>
+	    			<td>${article.catId}
+					</td>
+	  				</td>
+						<td>状态:</td>
+	    			<td><font color="red">
+						${article.status}
+						#if($!article.status ==  0)  
+							状态未知
+                        #elseif($!article.status == 1)  
+								审核中
+                        #elseif($!article.status == 2)  
+								审核通过
+						#elseif($!article.status == 3)  
+								审核未通过  
+                        #else  
+								其他状态
+                        #end  						
+					</font></td>
+				</tr>		
+	    		
+	    		<tr>
+	    			<td>创建日期:</td>
+	    			<td>
+						$!date.format('yyyy-MM-dd HH:mm:ss ',$!article.creatDt)
+					</td>
+				<td>标签:</td>
+	    			<td>${article.tags}</td>
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${article.id},3)" iconCls="icon-no"> 驳回  </a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${article.id},2)" iconCls="icon-ok">  通过  </a>
+	    </div>
+</body>
+</html>

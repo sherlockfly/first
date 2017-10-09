@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="LOG_HOME" value="../log" />
+	<property name="PROJECT" value="customcenter" />
+	<property name="MODULE" value="realtime" />
+	<property name="MODE" value="TEST" />
+
+	<contextName>${PROJECT}-${MODULE}-log</contextName>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${PROJECT}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/${PROJECT}-%d{"yyyy-MM-dd"}-%i.log
+			</FileNamePattern>
+			<MaxHistory>72</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{"yyyy/MM/dd HH:mm:ss,SSS"}[%X{product}|%X{module}|%X{node}|%X{process}|%X{uuid}][%p]%c{0}-%m%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{"yyyy/MM/dd HH:mm:ss,SSS"}[%X{product}|%X{module}|%X{node}|%X{process}|%X{uuid}][%p]%c{0}-%m%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com" level="ERROR" />
+	<logger name="com.yufusoft" level="ALL" />
+	<logger name="org" level="error" />
+	<logger name="org.mybatis" level="error" />
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

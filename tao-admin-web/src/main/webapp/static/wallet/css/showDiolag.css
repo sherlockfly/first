@@ -1,0 +1,28 @@
+.diolag{
+			
+				position:absolute;							
+				background: white;  
+				 height: 250px;  
+				 width: 350px;  
+
+				overflow-x:hidden;
+				overflow-y:hidden;
+				z-index:20002;
+				display:none;
+				margin:auto auto;
+         
+			}
+
+.bigDiv{  
+            background: #000;  
+            height: 100%;   
+            width: 100%;
+            position: absolute;  
+			left:0px;
+			top:0px;
+            z-index: 20000;  
+			opacity:0.6;
+        }
+ .diolagBar{
+ 		margin:20px 20px;
+ }   

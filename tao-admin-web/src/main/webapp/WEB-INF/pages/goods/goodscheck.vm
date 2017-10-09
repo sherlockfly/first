@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>商品审核</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+	<script src=#springUrl('/static/js/yfcommon.js') ></script>
+	<style>
+		p.bold {font-style:bold}
+	</style>	
+	<script>
+		
+    </script>
+</head>
+<body>
+ <form id="editform" method="post">
+		<center>
+			<a target="_blank" href="http://www.drbwx.com/jingxuan/${goods.id}">预览    	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${goods.id},3)" iconCls="icon-no">  驳回  </a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${goods.id},2)" iconCls="icon-ok">  通过  </a> </a>    
+		<h5>${goods.title}</h5>   作者：${goods.uid}
+		<hr />
+		<p class="bold">${goods.subhead}</p>
+		<hr />
+		${goods.content}
+		<hr />
+		</center>
+	    			<table cellpadding="5">
+	    		<tr>
+	    			<td>分类:</td>
+	    			<td>${goods.catId}
+					</td>
+	    			<td>品牌:</td>
+	    			<td>
+	    				${goods.brand}
+					</td>					
+				</tr>		
+	    		<tr>
+	    			<td>价格:</td>
+	    			<td>
+						${goods.price}
+					</td>
+						<td>状态:</td>
+	    			<td><font color="red">
+						${goods.status}
+						#if($!goods.status ==  0)  
+							状态未知
+                        #elseif($!goods.status == 1)  
+								审核中
+                        #elseif($!goods.status == 2)  
+								审核通过
+						#elseif($!goods.status == 3)  
+								审核未通过  
+                        #else  
+								其他状态
+                        #end  						
+					</font></td>
+	    		</tr>
+	    		<tr>
+					<td>创建日期:</td>
+	    			<td>
+						$!date.format('yyyy-MM-dd HH:mm:ss ',$!goods.creatDt)
+					</td>
+					<td>标签:</td>
+	    			<td>${goods.tags}</td>
+				</tr>	
+				<tr>
+	    		
+					<td>直达链接:</td>
+	    			<td><a href="${goods.url}" target="_blank">${goods.url}</a></td>
+	    		</tr>	
+
+		    	<tr>
+	    			<td>摘要:</td>
+	    			<td>
+					<textarea id="subhead" name="subhead" class="easyui-validatebox" data-options="required:true" style="width: 199px; height: 60px;">${goods.subhead}</textarea>
+					</td>
+	    		</tr>
+	    	</table>
+	    </form>
+		<br />
+		<br />
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${goods.id},3)" iconCls="icon-no">  驳回  </a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="shenhe(${goods.id},2)" iconCls="icon-ok">  通过  </a>
+	    </div>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.CategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.drbwx.admin.po.Category" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="TINYINT" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="pic_link" property="picLink" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="pcode" property="pCode" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, grade, pid, remark, status, creat_time, update_time, creator, pic_link, 
+    sort,code,pcode
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.drbwx.admin.po.Category" >
+    insert into category (name, grade, 
+      pid, remark, status, 
+      creat_time, update_time, creator, 
+      pic_link, sort,code,pcode)
+    values (#{name,jdbcType=VARCHAR}, #{grade,jdbcType=TINYINT}, 
+      #{pid,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{creatTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
+      #{picLink,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},#{code,jdbcType=VARCHAR},#{pCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.drbwx.admin.po.Category" >
+    insert into category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="creatTime != null" >
+        creat_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="picLink != null" >
+        pic_link,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+     <if test="code != null" >
+        code,
+      </if>
+     <if test="pCode != null" >
+        pcode,
+      </if>       
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=TINYINT},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="picLink != null" >
+        #{picLink,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+     <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+     <if test="pCode != null" >
+        #{pCode,jdbcType=VARCHAR},
+      </if>       
+    </trim>
+  </insert>  
+  <update id="updateByPrimaryKeySelective" parameterType="com.drbwx.admin.po.Category" >
+    update category
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=TINYINT},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="creatTime != null" >
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="picLink != null" >
+        pic_link = #{picLink,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+     <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+     <if test="pCode != null" >
+        pcode = #{pCode,jdbcType=VARCHAR},
+      </if>            
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+	<select id="findByWhere" resultMap="BaseResultMap"
+		parameterType="com.drbwx.admin.po.Category">
+		select
+		<include refid="Base_Column_List" />
+		from category
+		<include refid="Query_Where" />
+		ORDER BY id desc
+	</select>  
+	<select id="findByPage" resultMap="BaseResultMap"
+		parameterType="com.drbwx.admin.po.Category">
+		select
+		<include refid="Base_Column_List" />
+		from category
+		<include refid="Query_Where" />
+		ORDER BY id desc
+	</select>
+	<sql id="Query_Where">
+		<where>
+			<if test="name!=null and name!='' ">
+				AND name LIKE  '%'||#{name,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="status!=null">
+				AND STATUS= #{status}
+			</if>
+			<if test="code!=null">
+				AND code= #{code}
+			</if>
+			<if test="pCode!=null">
+				AND pcode= #{pCode}
+			</if>						
+			<if test="pid!=null and pid!='' ">
+				AND pid= #{pid}
+			</if>
+			<if test="grade!=null">
+				AND grade= #{grade}
+			</if>						
+		</where>
+	</sql>
+</mapper>

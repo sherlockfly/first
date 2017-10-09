@@ -1,0 +1,40 @@
+#layerShow {
+	display: none;
+	position: relative;
+}
+.popup {
+	border: 1px solid #370508;
+	background: #fae5b1;
+	padding-bottom: 20px;
+}
+.popup p.popupname {
+	font: 600 18px "微软雅黑";
+	color: #fff;
+	background: #850b13;
+	height: 36px;
+	line-height: 36px;
+	padding-left: 20px;
+}
+.popuptable {
+	padding: 20px;
+}
+.popup table {
+	border-collapse: collapse;
+}
+.popup table td {
+	padding: 8px;
+	background: #ffffff;
+	font-size: 12px;
+	font-weight: lighter;
+	color: #333;
+	text-align: center;
+	border: 1px solid #bc7b4d;
+}
+.popup table th {
+	padding: 8px;
+	background: #f4b745;
+	color: #4f080c;
+	font-size: 12px;
+	font-weight: lighter;
+	border: 1px solid #bc7b4d;
+}

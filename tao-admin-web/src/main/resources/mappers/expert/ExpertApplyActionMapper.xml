@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.ExpertApplyActionMapper">
+	<resultMap id="BaseResultMap"
+		type="com.drbwx.admin.po.ExpertApplyAction">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="apply_id" property="applyId" jdbcType="BIGINT" />
+		<result column="uid" property="uid" jdbcType="BIGINT" />
+		<result column="verify_id" property="verifyId" jdbcType="BIGINT" />
+		<result column="verify_name" property="verifyName" jdbcType="VARCHAR" />
+		<result column="verify_status" property="verifyStatus"
+			jdbcType="BIT" />
+		<result column="action_date" property="actionDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, apply_id, uid, verify_id, verify_name, verify_status,
+		action_date
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from expert_apply_action
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		expert_apply_action
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.drbwx.admin.po.ExpertApplyAction">
+		insert into
+		expert_apply_action (apply_id, uid,
+		verify_id, verify_name,
+		verify_status,
+		action_date)
+		values (
+		#{applyId,jdbcType=BIGINT},
+		#{uid,jdbcType=BIGINT},
+		#{verifyId,jdbcType=BIGINT}, #{verifyName,jdbcType=VARCHAR},
+		#{verifyStatus,jdbcType=BIT},
+		#{actionDate,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.drbwx.admin.po.ExpertApplyAction">
+		update expert_apply_action
+		<set>
+			<if test="applyId != null">
+				apply_id = #{applyId,jdbcType=BIGINT},
+			</if>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=BIGINT},
+			</if>
+			<if test="verifyId != null">
+				verify_id = #{verifyId,jdbcType=BIGINT},
+			</if>
+			<if test="verifyName != null">
+				verify_name = #{verifyName,jdbcType=VARCHAR},
+			</if>
+			<if test="verifyStatus != null">
+				verify_status = #{verifyStatus,jdbcType=BIT},
+			</if>
+			<if test="actionDate != null">
+				action_date = #{actionDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="findByPage" resultMap="BaseResultMap"
+		parameterType="com.drbwx.admin.po.ExpertApplyAction">
+		select
+		<include refid="Base_Column_List" />
+		from expert_apply_Action
+		<include refid="Query_Where" />
+		ORDER BY id desc
+	</select>
+	<sql id="Query_Where">
+		<where>
+			<if test="uid!=null and uid!='' ">
+				AND UID= #{uid}
+			</if>
+			<if test="status!=null and status!='' ">
+				AND STATUS= #{status}
+			</if>
+		</where>
+	</sql>
+</mapper>

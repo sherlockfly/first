@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>查看会员</title>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/default/easyui.css') rel="stylesheet" type="text/css"/>
+	<link href=#springUrl('/static/js/jquery-easyui/themes/icon.css') rel="stylesheet" type="text/css"/>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/jquery.easyui.min.js') ></script>
+	<script src=#springUrl('/static/js/jquery-easyui/locale/easyui-lang-zh_CN.js') ></script>
+</head>
+<body>
+	    			<table cellpadding="5">
+	    		<tr>
+	    			<td>昵称:</td>
+	    			<td>${user.nickname}
+					</td>
+	    			<td>登录名:</td>
+	    			<td>
+	    				$user.loginName
+					</td>					
+				</tr>		
+	    		<tr>
+	    			<td>邮箱:</td>
+	    			<td>
+						$user.email
+					</td>
+					<td>手机号:</td>
+					
+	    			<td>
+						$user.phone
+					</td>
+	    		</tr>
+	    		<tr>
+	    			<td>性别:</td>
+					
+	    			<td>
+						${user.gender}
+					</td>
+					<td>城市:</td>
+	    			<td>
+					$user.city
+					</td>
+	    		</tr>				
+	    		<tr>
+	    			<td>生日:</td>
+	    			<td>
+						$!user.birthday
+					</td>
+					<td>真实名字:</td>
+	    			<td>
+					$!user.realName
+					</td>
+				</tr>	
+		    		<tr>
+	    			<td>:</td>
+	    			<td>
+					</td>
+					<td>备注:</td>
+	    			<td>
+					</td>
+	    		</tr>
+	    	</table>
+</body>
+</html>

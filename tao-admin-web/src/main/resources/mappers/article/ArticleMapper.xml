@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.drbwx.admin.dao.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.drbwx.admin.po.Article" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="subhead" property="subhead" jdbcType="VARCHAR" />
+    <result column="cat_id" property="catId" jdbcType="INTEGER" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="creat_dt" property="creatDt" jdbcType="TIMESTAMP" />
+    <result column="upd_dt" property="updDt" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="pic_def" property="picDef" jdbcType="VARCHAR" />
+    <result column="read_count" property="readCount" jdbcType="INTEGER" />
+    <result column="visit_path" property="visitPath" jdbcType="VARCHAR" />
+    <result column="comment_count" property="commentCount" jdbcType="INTEGER" />
+    <result column="collect_count" property="collectCount" jdbcType="INTEGER" />
+    <result column="client_type" property="clientType" jdbcType="TINYINT" />
+    <result column="up_count" property="upCount" jdbcType="INTEGER" />
+    <result column="down_count" property="downCount" jdbcType="INTEGER" />
+    <result column="u.nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="head_iocn" property="headIocn" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    
+    <result column="pid1" property="catId1" jdbcType="INTEGER" />
+    <result column="c.name" property="name" jdbcType="VARCHAR" />
+    <result column="c2.names" property="names" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.drbwx.admin.po.Article" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, title, subhead, cat_id, tags, creat_dt, upd_dt, status, pic_def, read_count, 
+    visit_path, comment_count, collect_count, client_type, up_count, down_count,fabiao_date
+  </sql>
+  
+  <sql id="Union_Column_List" >
+    a.id, uid, title, subhead, cat_id, tags, creat_dt, upd_dt, a.status, pic_def, read_count, 
+    visit_path, comment_count, collect_count, client_type, up_count, down_count,fabiao_date, 
+    u.nickname,c.name,c.pid as pid1,c2.name as names
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.drbwx.admin.po.Article" useGeneratedKeys="true" keyProperty="id">
+    insert into article (uid, title, 
+      subhead, cat_id, tags, 
+      creat_dt, status, 
+      pic_def,visit_path,
+      client_type,content
+      )
+    values (#{uid,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+      #{subhead,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, #{tags,jdbcType=VARCHAR}, 
+      #{creatDt,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{picDef,jdbcType=VARCHAR},#{visitPath,jdbcType=VARCHAR}, 
+      #{clientType,jdbcType=TINYINT}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.drbwx.admin.po.Article" >
+    update article
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subhead != null" >
+        subhead = #{subhead,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null" >
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="creatDt != null" >
+        creat_dt = #{creatDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updDt != null" >
+        upd_dt = #{updDt,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="picDef != null" >
+        pic_def = #{picDef,jdbcType=VARCHAR},
+      </if>
+      <if test="readCount != null" >
+        read_count = #{readCount,jdbcType=INTEGER},
+      </if>
+      <if test="visitPath != null" >
+        visit_path = #{visitPath,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="collectCount != null" >
+        collect_count = #{collectCount,jdbcType=INTEGER},
+      </if>
+      <if test="clientType != null" >
+        client_type = #{clientType,jdbcType=TINYINT},
+      </if>
+      <if test="upCount != null" >
+        up_count = #{upCount,jdbcType=INTEGER},
+      </if>
+      <if test="downCount != null" >
+        down_count = #{downCount,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+	<select id="findByPage" resultMap="BaseResultMap"
+		parameterType="com.drbwx.admin.po.Article">
+		select  
+		<include refid="Union_Column_List" /> 
+		from article a left JOIN user u on a.uid = u.id left JOIN category c on c.id = a.cat_id left JOIN category c2 on c.pid = c2.id
+		<include refid="Query_Where" />
+		ORDER BY id desc 
+	</select>
+	<sql id="Query_Where">
+		<where>
+			<if test="title!=null and title!='' ">
+				AND a.title LIKE  CONCAT('%', #{title}, '%')  
+			</if>		
+			<if test="uid!=null">
+				AND a.UID= #{uid}
+			</if>
+			<if test="status!=null and status!='' ">
+				AND a.STATUS= #{status}
+			</if>
+			<if test="catId!=null and catId!='' ">
+				AND a.cat_id = #{catId}
+			</if>
+			<if test="id!=null">
+				AND a.id= #{id}
+			</if>
+			<if test="catId1!=null and catId==null">
+				AND a.cat_id in (select id from category where pid = #{catId1})
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectcatId" resultType="String">
+	   SELECT IFNULL(NAME,'未知') FROM CATEGORY WHERE ID = #{catId};
+	</select>
+	
+	<select id="selectuid" resultType="String">
+	   SELECT IFNULL(NICKNAME,'未知') FROM USER WHERE ID = #{uid};
+	</select>
+	
+	<select id="classificationone" resultType="com.drbwx.admin.dto.CategoryDto">
+	   SELECT * FROM CATEGORY WHERE GRADE = 1;
+	</select>
+	
+	<select id="classificationtwo" resultType="com.drbwx.admin.dto.CategoryDto">
+	   SELECT * FROM CATEGORY WHERE PID = #{id};
+	</select>
+	
+	<select id="classificationthree" resultType="com.drbwx.admin.dto.CategoryDto">
+	   SELECT * FROM CATEGORY WHERE PID = #{id};
+	</select>
+	
+	<update id="savemodify">
+	   UPDATE ARTICLE SET CAT_ID = #{param2} WHERE ID = #{param1};
+	</update>
+	
+	<select id="selectusername" resultType="Long">
+	   SELECT ID FROM USER WHERE NICKNAME = #{suername};
+	</select>
+	
+	<insert id="saverelated_goods">
+	   INSERT INTO related_goods (url,gid,name,pic_def,buy_count) VALUES (#{param3},#{param1},#{param4},#{param5},0);
+	</insert>
+	
+</mapper>

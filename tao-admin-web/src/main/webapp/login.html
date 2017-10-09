@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link href=static/css/login.css rel="stylesheet" type="text/css" />
+<script src="static/js/jquery-easyui/jquery.min.js" ></script>
+<script type="text/javascript">
+function gologin(){
+	jQuery.ajax({
+		type : "post",
+		url  : "login",
+		datetype: "json",
+		data: $("#loginform").serialize(),
+		success: function(data){
+			if(data.status==200){
+				window.location.href="main";
+			}else {
+				
+				alert(data.msg);
+			}
+		},
+		error:function(){
+			jQuery.messager.alert('操作失败','操作失败，系统异常','error');
+		}
+	});
+	
+}
+
+
+
+</script>
+</head>
+<body>
+<div class="login_wrap">
+	<div class="login_box">
+		<h1 class="logo"></h1>
+        <div class="login_form">
+			<h2 class="tit">管理员登录中心</h2>
+				
+            <div class="f1">
+			<form id="loginform" method="post">
+		
+				<div class="item"><i class="account"></i><input class="s1"  type="text" name="loginName" id="loginName" placeholder="管理员帐号"/>
+				</div>
+				
+				<div class="item" id="_ocx_password_str" style="border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #CBCBCB;margin-top:2px;">
+					<i class="password"></i>
+					<div class="embed1">
+						<input id="password" class="s1"  type="password" name="passworld" id="passworld"  placeholder="密码"/>
+					</div>
+				</div>
+               </div>
+            
+				<div class="item">
+				<input type="button" onclick="gologin();"  class="btn" value="登录"/>
+			</div>
+			
+          </form>
+        </div>
+		<!-- <div class="help-password"><a href="" target="_blank">忘记密码 ?</a></div> -->
+	</div>
+    <div class="bgicon"></div>
+	<div class="login_copy">Copyright 2016 YUFU Corporation All Rights</div>
+</div>
+
+</body>	
+	</html>

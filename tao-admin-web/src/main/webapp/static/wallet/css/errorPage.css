@@ -1,0 +1,123 @@
+/* CSS Document */
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,p{padding:0; margin:0;}
+body,a{font:12px / 1.5 Verdana,Tahoma,Helvetica,Arial,\5b8b\4f53; color:#474747; }
+table,td,tr,th{font-size:12px; }
+th{font-weight:bold;}
+li{list-style-type:none;}
+img{border:0; vertical-align:middle;}
+ol,ul {list-style:none;}
+h1,h2,h3,h4,h5,h6{ font-weight:bold; font-size:14px;}
+td,th{ padding:6px 0;}
+em{font-style:normal;color:#ccc;}
+a{color:#2c5294; text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover{text-decoration:underline;}
+a:active{color:#ba2636;}
+.clear{ clear:both; display:block; width:100%; height:0px; font-size:2px;}
+.t_red{color:#e03233}
+
+/*------------online pay-----------*/	
+.payHead{width:960px; height:auto; margin:0 auto; padding:20px 0 16px; }
+.payHeadBar{width:100%; height:46px; }
+.payTitle{float:left;width:260px;height:46px;margin-left:2px;background:url(../img/logo.png) no-repeat left top;overflow: hidden;text-align:left;}
+.payTitle a{float:left;width:150px;height:36px;margin:0;line-height:4;text-indent:9999px;}
+.payTitle h1{float:left;width:90px;font:normal 16px/36px "Microsoft Yahei";}
+.payTitleHelp{float:right; width:232px; height:36px; margin-top:10px; line-height:36px;overflow:hidden; background:url(../img/slogan.png) no-repeat center left;text-align:right;}
+
+.payorder{width:900px; height:auto; margin:0 auto; padding:22px 30px 18px; background:#f0f0f0; border-top:4px solid #999;}
+.payorder ul{ margin-top:4px; height:32px; zoom:1;}
+.payorder li{position:relative; zoom:1; float:left; height:32px; padding: 0 16px; line-height:32px;}
+.payorder li i{ position:absolute; top:10px;left:0;width:0;height:14px;border-left:1px solid #ccc;overflow:hidden;}
+.payorder li strong{ color:#ef6700; font-size:16px;}
+.orderInfo{font-weight:bold; color:#555; padding:0 16px; font-size:14px;}
+
+.bulletin{ width:960px; line-height:1.5; margin:20px auto 0; color:#999;}
+
+.payBar{ width:952px; height:auto; margin:10px auto 0; padding:6px 4px 4px; background:#cfd7e5;}
+.payChannel{width:802px; height:46px; padding-left:50px; position:relative;}
+.payChannelBar li{float:left; width:160px; height:46px; margin-right:2px; background:#e6ebf2; font:bold 14px/46px simsun; text-align:center; cursor:pointer; color:#666;}
+.payChannelBar li.active{background:#fff; color:#2c5195; cursor:default;}
+
+.formBar{ width:100%; height:auto; background:#fff; position:relative; padding:10px 0;}
+.formBar form{width:100%; height:auto;}
+
+.paybox{ padding:0 60px 30px; position:relative; zoom:1;}
+.payguide{ font-size:14px; color:#333;}
+.payguide p{ margin-bottom:10px;}
+.cardInput{ width:320px; height:44px; margin:20px 0; padding-left:10px; box-shadow:0 1px 2px rgba(0, 0, 0, .1) inset; line-height:46px; color:#999; font-size:14px;}
+
+.choosecard{ padding:40px 0;}
+.choosecard li{ float:left; width:160px; height:auto; margin:0 30px 20px 0; padding-left:16px;  position:relative; zoom:1;}
+.choosecard li input{ position:absolute; left:0; top:12px;}
+.choosecard li img{ display:block; width:154px; height:33px;  border:2px solid #fff; cursor:pointer;}
+.choosecard li.active img{ background:#ffffe5; border-color:#ef6700;}
+.choice p{ color:#999; padding-top:6px;}
+
+
+.contentForm{ float:left; position:relative; width:100%; height:auto; margin-bottom:24px; font-size:14px; }
+.contentForm label{float:left; width:210px; margin-right:4px; text-align:right; line-height:32px;}
+.contentForm input{float:left;height:30px; padding-left:4px; line-height:30px; color:#999; font-size:14px; box-shadow:0 1px 2px rgba(0, 0, 0, .1) inset;}
+.contentForm .value{float:left;height:32px; line-height:32px; font-size:14px; color:#333;}
+.contentForm .value a{ margin-left:10px; line-height:28px;}
+.contentForm .card{float:left;height:38px; padding:4px 12px; background:#f5f5f5; border:1px solid #ccc; line-height:38px; font-weight:bold;}
+.contentForm select{ display:inline-block; vertical-align:middle;padding:4px 3px;_padding: 0;_margin: 4px 0 0;}
+input.fixed{ background:#f2f2f2; color:#333; border:1px solid #e1e1e1;}
+.fixedText{float:left;height:28px; line-height:28px; color:#333;}
+
+.contentForm input.focus{ border-color:#4975b8; box-shadow:none;}
+.contentForm input,.contentForm select,.contentForm p,.contentForm a{vertical-align:middle;}
+
+.contentForm input.long{ width:220px;}
+.contentForm input.short{ width:70px;}
+.contentForm .tips,.contentForm .tipsWrong{ float:left; width:100%; line-height:18px; text-indent:214px; font-size:12px;}
+.contentForm .tips,.contentForm .tipsWrong{color:#b1b1b1;}
+.contentForm .tipsRight{float:left; display:none; width:16px; height:16px; margin:8px 0 0 4px; background:url(../img/icon_sprite.png) no-repeat 0 -104px;}
+.contentForm .tipsWrong{color:#e03233}
+.contentForm .linRight{float:left; width:120px; height:16px; margin:16px 0 0 10px; line-height:16px;}
+
+.contentForm .double{float:left;}
+.contentForm .double input{float:none; display:inline-block; margin-right:4px;}
+
+.getCode{ display:inline-block; width:auto;color:#888;font-size:12px;line-height:24px;}
+.authCode{display:inline-block; width:92px; height:32px; font-weight:bold; text-align:center; background:url(../img/btn_gray_i.png) no-repeat; line-height:30px; color:#333;}
+.authCode:hover{ background:url(../img/btn_gray_c.png) no-repeat; text-decoration:none;}
+.timer{height:30px; padding:0 8px; background:#f5f5f5; border:1px solid #ccc; line-height:30px;}
+
+.checkbar{margin:0 0 20px 214px; vertical-align:middle; font-size:14px;}
+.checkbar input{margin-right:6px; padding-top:4px;}
+
+.formBtnBar{ float:left; width:100%; height:36px; margin-bottom:20px; padding-left:20px;}
+.formBtnH,.formBtn{width:160px; height:38px; border:none; cursor:pointer; color:#fff; font-weight:bold; text-align:center; line-height:38px; font-size:14px;}
+.formBtn{ background:url(../img/btn_blue_i.png) no-repeat;}
+.formBtnH{background:url(../img/btn_blue_c.png) no-repeat;}
+
+.treatyBox{width:580px; height:70px;margin:0 0 0 114px;padding:6px;border:1px solid #CCC;color:#666;overflow-y:scroll; line-height:1.5em;text-indent:2em;}
+.treatyBox h5{text-align:left; line-height:1.8; font-size:14px;}
+.treatyBox h6,.treatyBox p{ margin-bottom:8px;font-size:12px;}
+
+
+.payqa{ width:960px; height:auto; margin:20px auto 20px; line-height:1.8;}
+.payqa li{ margin-top:6px;}
+.payqa li a{color:#666;}
+.payqa li p{ text-indent:20px; color:#999;}
+.payqa .tip{ border-top:1px dashed #e1e1e1; padding-top:10px; margin-top:10px;}
+
+.payFooterBar{ clear:both; width:960px; height:auto; margin:40px auto 0; padding-top:12px; border-top:3px solid #b8b8b8;}
+.payFooter{width:100%;  height:30px; color:#b8b8b8;}
+.payFooterLink{ float:left; width:500px;}
+.payFooterLink a{ color:#666;}
+.payFooterLink span{ margin:0 6px;}
+.payCopyright{ float:right; width:450px; text-align:right;}
+
+/*------------online pay finally-----------*/
+.payFinally{ width:710px; height:auto; margin:6px auto 0; padding:50px 125px; background:#f2f2f2;}
+.payOrder{ margin:10px 0 0 40px; padding:40px 20px; background:#fff url(../img/icon_sprite.png) repeat-x 0 -120px;}
+.payOrderList{margin:6px 0 0 12px;}
+.payOrderList li{line-height:2}
+.payOrderList li span{color:#666;}
+.orderTitle{ float:left; width:260px; height:32px;font:24px/32px "Microsoft Yahei"; text-indent:40px;}
+.orderWrong{ background:url(../img/icon_sprite.png) no-repeat 0 -72px;color:#e03233;}
+.orderRight{ background:url(../img/icon_sprite.png) no-repeat 0 -40px;color:#1c8a1c;}
+.orderBack{ float:left; width:160px;line-height:32px;font-size:14px;}
+.orderBack a{ font-size:14px; text-decoration:underline; font-weight:bold;}
+.cardKind{ margin:0 4px; background:#ccc; color:#fff; padding:1px 2px; border-radius:2px;}

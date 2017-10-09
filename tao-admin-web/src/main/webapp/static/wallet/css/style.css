@@ -1,0 +1,280 @@
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+body {
+	background: #f4f4f4;
+	color: #666666;
+	font-size: 12px;
+	margin-top: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	position: relative;
+}
+ul, ol {
+	list-style-type: none;
+}
+select, input, img {
+	vertical-align: middle;
+}
+table {
+	border-collapse: collapse;
+}
+a {
+	text-decoration: none;
+	color: #666666;
+}
+a:hover, a:active, a:focus {
+	color: #ea6d1a;
+}
+.underline {
+	text-decoration: underline;
+}
+.clear {
+	clear: both;
+}
+.cored {
+	color: #e7393a;
+	font-weight: bold;
+}
+.padleft20 {
+	padding-left: 20px;
+}
+.cont {
+	width: 990px;
+	margin: 0 auto;
+}
+.inputstyle {
+	height: 34px;
+	line-height: 34px;
+	padding-left: 5px;
+	border: 1px solid #d7d7d7;
+}
+.selectstyle {
+	height: 36px;
+	line-height: 36px;
+	width: 103px;
+	width: 100px!important;
+	border: 1px solid #d7d7d7;
+	position: relative;
+}
+.title {
+	font: 400 18px "微软雅黑";
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e4e4e4;
+	color: #333333;
+	padding-left: 20px;
+}
+.pad20 {
+	margin-top: 20px;
+}
+/* 头部底部 */
+.top {
+	background: #FFF;
+	height: 80px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 15px;
+}
+.logo {
+	width: 500px;
+	text-align: left;
+	float: left;
+}
+.cr {
+	width: 32%;
+	float: right;
+	text-align: right;
+	display: inline-block;
+	margin-top: 50px;
+}
+.cr02 {
+	width: 48%;
+	float: right;
+	text-align: right;
+	display: inline-block;
+	margin-top: 50px;
+}
+.cr ul li {
+	float: left;
+	padding: 0 12px;
+	text-align: right;
+	border-right: 1px solid #ccc;
+}
+.cr02 ul li {
+	float: left;
+	padding: 0 12px;
+	text-align: right;
+}
+.cr02 ul li.blb {
+	border-left: 1px solid #ccc;
+}
+.cr02 ul li a.yhm {
+	background: url(../images/web/arrow_bottom.gif) no-repeat right 5px;
+	display: block;
+	padding-right: 12px;
+}
+.cr ul li.tel, .cr02 ul li.tel {
+	background: url(../images/web/fk_06.jpg) no-repeat 0px 0px;
+	padding-left: 15px;
+	margin-left: 10px;
+	border: none;
+}
+.contop {
+	margin-bottom: 15px;
+	background: #fff;
+	border: 1px solid #d7d7d7;
+	padding: 20px 20px 15px 20px;
+}
+.ctleft {
+	float: left;
+	width: 680px;
+}
+.ctleft h3 {
+	padding-bottom: 8px;
+	font-size: 14px;
+	color: #2f2f2f;
+}
+.ctleft p {
+	color: #979797;
+	line-height: 18px;
+}
+.ctcent {
+	float: left;
+	width: 160px;
+	color: #2e2e2e;
+	text-align: right;
+}
+.num {
+	font: 600 24px "微软雅黑";
+	color: #e7393a;
+	padding-right: 3px;
+}
+.ctright {
+	float: left;
+	width: 90px;
+	padding-left: 10px;
+}
+.ctleft02 {
+	float: left;
+	width: 370px;
+	height: 32px;
+	font: 400 18px "微软雅黑";
+}
+.ctleft03 {
+	float: left;
+	width: 200px;
+	height: 32px;
+	font: 400 18px "微软雅黑";
+}
+.orderRight {
+	background: url(../images/web/righticon.gif) no-repeat 0px 0px;
+	padding-left: 55px;
+	line-height: 46px;
+	height: 46px;
+}
+.orderWrong {
+	background: url(../images/web/wrongicon.gif) no-repeat 0px 0px;
+	padding-left: 55px;
+	line-height: 46px;
+	height: 46px;
+}
+.orderRight span {
+	color: #009444;
+}
+.orderWrong span {
+	color: #e7393a;
+}
+.orderWrong strong, .orderRight strong {
+	font: 600 26px Arial, Helvetica, sans-serif;
+	color: #e7393a;
+}
+.ctcent02 {
+	float: left;
+	width: 420px;
+	padding-top: 17px;
+	color: #999;
+}
+.ctcent03 {
+	float: left;
+	width: 590px;
+	padding-top: 17px;
+	color: #999;
+}
+.footer {
+	background: #FFF;
+	padding: 15px 0 40px 0;
+	color: #999999;
+	border-top: 1px solid #ccc;
+}
+.fleft {
+	display: inline-block;
+	width: 850px;
+	text-align: left;
+}
+.fright {
+	display: inline-block;
+	width: 130px;
+	text-align: right;
+}
+
+
+#pw{ position: relative; ition:relative; width:259px; height:auto; margin-top:50px; margin-left:100px; padding: 8px 10px 10px; *padding: 7px 10px 4px; line-height: 16px; border: solid 1px #cdcdcd;border-radius: 4px;background:#fff}   
+.pw-arrow{position: absolute;overflow: hidden; font-style: normal;font-family: simsun;font-size: 22px;}
+.pw-arrow em,.pw-arrow i{position: absolute;left:0;top:0;font-style: normal;}   
+.pw-arrow-top{top: -6px; height: 6px;width: 18px;left:18px;margin-left:-6px;}   
+.pw-arrow-top em{top: -1px;color: #cdcdcd;}   
+.pw-arrow-top i{top: 0px; color:#fff;}  
+
+.t_tip{line-height:1.6em;}
+#pw table,#pw tr,#pw td,#pw td a{padding:0;border:none;}  
+#pw td a{display:block;width:40px;height:40px;overflow: hidden;} 
+
+.pw_number{position:relative; }
+.pw_number img{ width:40px; height:40px;}
+.pw_clear,.pw_close{ position: absolute; right:0; height:38px; width:58px; text-align:center; color:#fff; line-height:39px; border:none;}
+.pw_clear{top:1px;background:#818fb8;}
+.pw_close{top:41px;background:#a9a9a9;}
+
+.tips_a{ background:#fff; margin-bottom:5px;}
+.tips_a h1{ font-weight:bold; font-size:11px; background:#e5e5e5; margin-bottom:5px; padding-left:4px;}
+.tips_a div{ padding:0 4px;}
+.tips_a .tips_c{ border-top:1px solid #e5e5e5; margin:0 5px; padding:0;}
+.tips_a span { border-top:1px solid #e5e5e5;}
+.tips_b{padding-top:4px;}
+
+
+
+/* 支付弹出框 */
+.pop_back{position:fixed;_position:absolute;z-index:998;top:0;left:0;width:100%;_width:expression(document.documentElement.clientWidth);height:100%;_height:expression(document.documentElement.clientHeight);background-color:#000;opacity:0.2;filter:alpha(opacity=20);}
+.pop_wrap{position:fixed;_position:absolute;z-index:999;top:50%;left:50%;padding:3px;background:#666;}
+.pw1{width:500px;height:240px;margin:-155px 0 0 -255px;}.pw2{width:500px;height:360px;margin:-185px 0 0 -255px;}
+:root .pop_wrap{filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#00000000',EndColorStr='#00000000');}
+.pop_box{height:100%;background-color:#fff;}
+.pop_box a.close{color:#999;font:300 24px/1 Tahoma;width:24px;height:24px;text-align:center;cursor:pointer;position:absolute;top:10px;right:10px;}
+.pop_box a.close:hover{color:#f21a00;text-decoration:none;}
+.pop_tit{font-size:16px;font-weight:bold;color:#333;padding:10px 15px;}
+.pop_content{border-top:1px solid #ddd; padding:20px;}
+.pop_content .icon{width:32px;height:32px;background-position:-33px -128px;float:left;margin:-6px 0 0 -42px;}
+.pop_content strong{font-size:14px;}
+.pop_content .exp{color:#999;margin-top:10px;}
+.pop_content .btnbox{margin-top:30px;}
+.pop_content button{margin-right:20px;}
+.pop_content .text{ width:220px;}
+.pop_content p{ font-size:16px; color:#000; padding-left:98px; padding-top:15px;}
+.pop_content .tip{ font-size:12px; color:#666; display: block; padding:10px 0 30px 0;}
+
+
+.divSubmitSucceess {
+    float: left;
+    font-size: 20px;
+    margin-left: 20px;
+    margin-top: 60px;
+}
+	
+
+.divSubmitFailed {
+    float: left;
+    font-size: 20px;
+    margin-left: 50px;
+    margin-top: 60px;
+}
