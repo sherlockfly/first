@@ -32,6 +32,8 @@
 	    <result column="experience" property="experience" jdbcType="INTEGER" />	
 	    <result column="signin_dt" property="signinDt" jdbcType="TIMESTAMP" />
 	    <result column="sign_Days" property="signDays" jdbcType="INTEGER" />
+	    
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, login_name, pwd, nickname, email, phone, city, gender, birthday,

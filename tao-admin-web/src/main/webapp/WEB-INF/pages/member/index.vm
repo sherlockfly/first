@@ -197,7 +197,10 @@
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="editForm()">保存</a>
 	    </div>
 	</div>
-		<div id="viewwin" closed="true" class="easyui-window"  title="查看会员" data-options="iconCls:'icon-save'" style="width:530px;height:500px;padding:10px;"></div>
+	
+		<div id="viewwin" closed="true" class="easyui-window"  title="查看会员" data-options="iconCls:'icon-save'"
+		 style="width:530px;height:500px;padding:10px;"></div>
+		 
 		<div id="msgwin" closed="true" class="easyui-window"  title="发送私信" data-options="iconCls:'icon-save'" style="width:530px;height:500px;padding:10px;">
 				 <table cellpadding="5">
 				 <tr>
